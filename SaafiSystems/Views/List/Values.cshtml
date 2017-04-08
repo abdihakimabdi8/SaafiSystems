@@ -1,0 +1,16 @@
+﻿@model SaafiSystems.ViewModels.LoadFieldsViewModel
+
+
+<table class="table table-striped">
+    @foreach (var field in Model.Fields)
+    {
+        <tr class="table table-striped">
+            <td>
+                <a asp-controller="List"
+                   asp-action="Jobs"
+                   asp-route-column="@Model.Column"
+                   asp-route-value="@field.Value">@field.Value</a>
+            </td>
+        </tr>
+    }
+</table>

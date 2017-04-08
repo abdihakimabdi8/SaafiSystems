@@ -1,0 +1,35 @@
+﻿@model List<SaafiSystems.Models.Revenue>
+
+<h1>@ViewBag.Title</h1>
+
+@if (Model.Count == 0)
+{
+    <p>No Revenue entries yet!</p>
+}
+
+<table class="table">
+
+    <tr>
+        <th>Date</th>
+        <th>Reference</th>
+        <th>Owner</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Category</th>
+    </tr>
+
+    @foreach (var expense in Model)
+    {
+        <tr>
+            <td>@expense.Date</td>
+            <td>@expense.Reference</td>
+            <td>@expense.Owner</td>
+            <td>@expense.Name</td>
+            <td>@expense.Description</td>
+            <td>@expense.RevenueCategory.Name</td>
+        </tr>
+    }
+</table>
+
+<p><a asp-controller="Revenue" asp-action="Add">Add Revenue</a></p>

@@ -1,0 +1,44 @@
+﻿@model SaafiSystems.ViewModels.DriverViewModel
+
+<h1>Add Load</h1>
+
+<form asp-controller="Driver" asp-action="Add" method="post">
+
+    <div class="form-group">
+        <label asp-for="Date"></label>
+        <input class="form-control" asp-for="Date" />
+        <span asp-validation-for="Date"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Refernce"></label>
+        <input class="form-control" asp-for="Refernce" />
+        <span asp-validation-for="Refernce"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input class="form-control" asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DriverName"></label>
+        <input class="form-control" asp-for="DriverName" />
+        <span asp-validation-for="DriverName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LoadMiles"></label>
+        <input class="form-control" asp-for="LoadMiles" />
+        <span asp-validation-for="LoadMiles"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DeadMiles"></label>
+        <input class="form-control" asp-for="DeadMiles" />
+        <span asp-validation-for="DeadMiles"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Rate"></label>
+        <input class="form-control" asp-for="Rate" />
+        <span asp-validation-for="Rate"></span>
+    </div>
+    <input class="btn btn-success" type="submit" value="Add Load" />
+
+</form>

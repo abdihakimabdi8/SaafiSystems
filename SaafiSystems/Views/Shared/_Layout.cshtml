@@ -19,56 +19,112 @@
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SaafiSystems</a>
+                <div class="nav navbar nav">
+
+                    <div class="dropdown">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="width: 35px; height: 5px;  background-color: #d9d9d9; margin: 6px 0">
+
+                            <div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="width: 35px; height: 5px;  background-color: #d9d9d9; margin: 6px 0"> </div>
+                            <div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="width: 35px; height: 5px;  background-color: #d9d9d9; margin: 6px 0;"></div>
+                            <div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="width: 35px; height: 5px;  background-color: #d9d9d9; margin: 6px 0;"></div>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-controller="List" asp-action="Index">List</a></li>
+                            <li><a asp-controller="Load" asp-action="Add">Add Trip</a></li>
+                            <li><a asp-controller="Remove" asp-action="Index">Remove Trip</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a asp-controller="Reports" asp-action="Index">Reports</a></li>
+                        </ul>
+
+                    </div>
+
+                </div>
             </div>
             <div class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav"><li><a asp-area="" asp-controller="Home" asp-action="Index"> Saafi</a></li></ul>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search your trips, loads and more">
+                    </div>
+                    <a asp-controller="Search" asp-action="Index" class="btn btn-default">Search<span class="nav navbar-nav"></span></a>
+                </form>
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+
+
+                    <li><a asp-controller="List" asp-action="Index">List</a></li>
+                    <li><a asp-controller="Load" asp-action="Add">Add Trip</a></li>
+                    <li><a asp-controller="Remove" asp-action="Index">Remove</a></li>
+                    <li><a asp-controller="Edit" asp-action="Index">Edit</a></li>
+
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2017 - SaafiSystems</p>
-        </footer>
-    </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-lg-2">
+                    <nav class="navbar navbar-default navbar-fixed-side">
+                        <div id="sidemenu-wrapper" style="background: #d9d9d9; min-height: 1387px; width: 201px; margin-left: 0px;">
+                            <ul class="sidemenu-nav btn-group-sm" style=" position : absolute; top: 0; width: 200px; margin: 0; margin-top: 10px; padding: 0; list-style: none; display: block; color: #595952; font-family: sans-serif; font-weight: 400; ">
+                                <li><br /></li>
+                                <li> <strong><a asp-controller="List">Trips<span class="pull-right btn-xs btn-default quick"></span></a><br /></strong></li>
+                                <li> <strong><a asp-controller="Process">Owner Operator<span class="pull-right btn-xs btn-default quick"></span></a><br /></strong></li>
+                                <li> <strong><a asp-controller="Driver" class="navbar-link">Company Driver</a><br /></strong> </li>
+                                <li><strong><a asp-controller="Reports" class="navbar-link">Reports </a><br /> </strong></li>
+                                <li><strong><a asp-controller="Load" asp-action="Add" class="navbar-link">Process Load</a><br /> </strong> </li>
+                                <li><strong><a asp-controller="Load" asp-action="Remove" class="navbar-link">Remove Load</a><br />  </strong></li>
+                                <li><strong><a asp-controller="Load" asp-action="Edit" class="navbar-link">Edit Load</a><br />  </strong></li>
+                                <span></span>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="jumbotron span12 pagination-centered" style="background:white">
 
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+                </div>
+                <div class="container body-content">
 
-    @RenderSection("Scripts", required: false)
+                    <div class="btn-group pull-right" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default">The Last 7 Days</button>
+                        <button type="button" class="btn btn-default">This month</button>
+                        <button type="button" class="btn btn-default">This quarter</button>
+                        <button type="button" class="btn btn-default">This year</button>
+                    </div>
+                    @RenderBody()
+                    <hr />
+                    <footer>
+                        <p>&copy; 2017 - SaafiSystems</p>
+                    </footer>
+                </div>
+
+                <environment names="Development">
+                    <script src="~/lib/jquery/dist/jquery.js"></script>
+                    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+                    <script src="~/js/site.js" asp-append-version="true"></script>
+                </environment>
+                <environment names="Staging,Production">
+                    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                            asp-fallback-test="window.jQuery"
+                            crossorigin="anonymous"
+                            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+                    </script>
+                    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                            crossorigin="anonymous"
+                            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+                    </script>
+                    <script src="~/js/site.min.js" asp-append-version="true"></script>
+                </environment>
+
+                @RenderSection("Scripts", required: false)
 </body>
+
 </html>

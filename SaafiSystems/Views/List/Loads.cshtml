@@ -1,0 +1,52 @@
+﻿@model SaafiLogistics.ViewModels.SearchLoadsViewModel
+<div class="page-header" style="background:white">
+    <h1 style=" font-size: 26px;color: #0b131d;
+font-weight: 600;
+font-size: 36px;
+margin-top: 20px;
+margin-bottom: 10px;
+font-family: inherit;
+font-weight: 500;
+line-height: 1.1;
+color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
+        Your Trips
+        <a asp-controller="Load" asp-action="Add" class="hidden-xs btn btn-success pull-right">Add Trip</a> <a asp-controller="Load" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">Add Trip</a>
+        <a class=" hidden-xs btn btn-default pull-right"> Print Trips</a>
+    </h1>
+</div>
+@if (Model.Loads != null)
+{
+
+    <table class="table table-striped">
+        <tr>
+            <th>Date</th>
+            <th>Number</th>
+            <th>Description</th>
+            <th>Owner</th>
+            <th>Pay</th>
+            <th>Advance</th>
+            <th>Net</th>
+        </tr>
+    </table>
+    @foreach (var load in Model.Loads)
+    {
+        <table class="table table-striped">
+            <tr>
+
+                <td>@load.Date</td>
+
+                <td>@load.Number</td>
+
+                <td>@load.Description</td>
+
+                <td>@load.Owner</td>
+
+                <td>@load.Pay</td>
+
+                <td>@load.Advance</td>
+
+                <td>@load.Net</td>
+            </tr>
+        </table>
+    }
+}

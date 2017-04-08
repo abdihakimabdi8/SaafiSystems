@@ -1,0 +1,32 @@
+﻿@model List<SaafiLogistics.Models.Driver>
+<h1>@{ViewBag.title = "Payroll Details";}</h1>
+
+@if (Model.Count == 0)
+{
+    <p>No Payroll items yet!</p>
+
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>Date</th>
+        <th>Number</th>
+        <th>Description</th>
+        <th>DriveName</th>
+        <th>LoadMiles</th>
+        <th>DeadMiles</th>
+        <th>Rate</th>
+    </tr>
+    @foreach (var payroll in Model)
+    {
+        <tr>
+            <td>@payroll.Date</td>
+            <td>@payroll.Number</td>
+            <td>@payroll.Description</td>
+            <td>@payroll.DriverName</td>
+            <td>@payroll.LoadMiles</td>
+            <td>@payroll.DeadMiles</td>
+            <td>@payroll.Rate</td>
+        </tr>
+    }
+</table>
