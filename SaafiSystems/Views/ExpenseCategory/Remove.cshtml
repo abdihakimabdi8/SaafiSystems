@@ -1,0 +1,19 @@
+﻿@model List<SaafiSystems.Models.ExpenseCategory>
+
+<h1>@ViewBag.title</h1>
+@if (Model.Count == 0)
+{
+    <p>No expense categoris to remove</p>
+
+}
+
+<form asp-controller="ExpenseCategory" asp-action="Remove" method="post">
+
+
+    @foreach (var entry in Model)
+    {
+        <input type="checkbox" name="expenseCategoryIds" id="@entry.ID" value="@entry.ID" />
+    }
+
+    <input type="submit" value="Remove Selected Category(s)" />
+</form>

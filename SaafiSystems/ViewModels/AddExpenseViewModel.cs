@@ -10,7 +10,7 @@ namespace SaafiSystems.ViewModels
 {
     public class AddExpenseViewModel
     {
-        private List<ExpenseCategory> list;
+      
 
         [Required]
         [Display]
@@ -25,10 +25,6 @@ namespace SaafiSystems.ViewModels
         [Display]
         public string Owner { get; set; }
 
-        [Required]
-        [Display(Name = "Expense")]
-        public string Name { get; set; }
-
         [Required(ErrorMessage = "You must give your Expense a description")]
         public string Description { get; set; }
 
@@ -41,30 +37,28 @@ namespace SaafiSystems.ViewModels
         [Display(Name = "Category")]
         public int ExpenseCategoryID { get; set; }
 
-        public ExpenseCategory ExpenseCategory { get; set; }
+        public List<ExpenseCategory> ExpenseCategory { get; set; }
 
         public List<SelectListItem> ExpenseCategories { get; set; }
 
-        public AddExpenseViewModel()
+
+        public AddExpenseViewModel() { }
+        public AddExpenseViewModel(IEnumerable<ExpenseCategory> expenseCategories)
         {
 
             ExpenseCategories = new List<SelectListItem>();
 
             // <option value="0">Hard</option>
-            foreach (SelectListItem category in ExpenseCategories)
+            foreach (ExpenseCategory category in expenseCategories)
             {
                 ExpenseCategories.Add(new SelectListItem
                 {
-                    Value = ((int)ExpenseCategoryID).ToString(),
-                    Text = Name.ToString()
+                    Value = ((int)category.ID).ToString(),
+                    Text = category.Name.ToString()
                 });
             }
 
         }
 
-        public AddExpenseViewModel(List<ExpenseCategory> list)
-        {
-            this.list = list;
-        }
     }
 }

@@ -40,21 +40,39 @@ namespace SaafiSystems.Controllers
         {
             if (ModelState.IsValid)
             {
-                ExpenseCategory newExpenseCategory = new ExpenseCategory
+                ExpenseCategory newCategory = new ExpenseCategory
                 {
                     Name = addExpenseCategoryViewModel.Name,
-
-
-
                 };
 
-                context.ExpenseCategories.Add(newExpenseCategory);
+                context.ExpenseCategories.Add(newCategory);
                 context.SaveChanges();
 
-                return Redirect("/");
+                return Redirect("/ExpenseCategory");
             }
 
             return View(addExpenseCategoryViewModel);
+        }
+
+        public IActionResult Remove()
+        {
+            ViewBag.title = "Remove Categories";
+            ViewBag.epenseCategories = context.ExpenseCategories.ToList();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Remove(int[] expenseCategoryIds)
+        {
+            foreach (int expenseCategoryId in expenseCategoryIds)
+            {
+                ExpenseCategory theExpenseCategory = context.ExpenseCategories.Single(c => c.ID == expenseCategoryId);
+                context.ExpenseCategories.Remove(theExpenseCategory);
+            }
+
+            context.SaveChanges();
+
+            return Redirect("/ExpenseCategory");
         }
     }
 }

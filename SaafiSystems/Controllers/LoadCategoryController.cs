@@ -51,10 +51,30 @@ namespace SaafiSystems.Controllers
                 context.LoadCategories.Add(newLoadCategory);
                 context.SaveChanges();
 
-                return Redirect("/");
+                return Redirect("/LoadCategory");
             }
 
             return View(addLoadCategoryViewModel);
+        }
+        public IActionResult Remove()
+        {
+            ViewBag.title = "Remove Categories";
+            ViewBag.loadCategories = context.LoadCategories.ToList();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Remove(int[] loadCategoryIds)
+        {
+            foreach (int loadCategoryId in loadCategoryIds)
+            {
+                LoadCategory theLoadCategory = context.LoadCategories.Single(c => c.ID == loadCategoryId);
+                context.LoadCategories.Remove(theLoadCategory);
+            }
+
+            context.SaveChanges();
+
+            return Redirect("/LoadCategory");
         }
     }
 }

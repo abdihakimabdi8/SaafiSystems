@@ -1,0 +1,48 @@
+﻿@model List<SaafiSystems.Models.RevenueCategory>
+<div class="page-header" style="background:white">
+    <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
+        Revenue Categories
+        <a asp-controller="RevenueCategory" asp-action="Add" class="hidden-xs btn btn-primary pull-right">+ Add Category</a> <a asp-controller="RevenueCategories" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ Add Category</a>
+        <a asp-controller="Revenue" asp-action="Add" class="hidden-xs btn btn-success pull-right">+ New Revenue Item</a> <a asp-controller="Revenue" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ New Revenue Item</a>
+    </h1>
+</div>
+
+
+@if(Model.Count == 0)
+{
+    <p>No Revenue Categories yet</p>
+
+}
+<form asp-controller="RevenueCategory" asp-action="Remove" method="post">
+    <table class="table ">
+        <tr>
+            <th>Reference</th>
+            <th>Revenue Category</th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var revenueCategory in Model)
+        {
+
+            <tr>
+                <td><a asp-controller="Revenue" asp-route-id="@revenueCategory.ID">@revenueCategory.ID</a></td>
+                <td><a asp-controller="Revnue" asp-route-id="@revenueCategory.ID">@revenueCategory.Name</a></td>
+                <td>
+                    <input type="checkbox" name="revenueCategoryIds" id="@revenueCategory.ID" value="@revenueCategory.ID" class="btn btn-danger btn-sm" />
+                    <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+                </td>
+                <td>
+                    <input type="checkbox" name="revenueCategoryIds" id="@revenueCategory.ID" value="@revenueCategory.ID" class="btn btn-danger btn-sm" />
+                    <input type="submit" value="Edit" class="btn btn-info btn-sm" />
+                </td>
+            </tr>
+
+        }
+
+    </table>
+
+</form>
+
+
+
+<p><a asp-controller="ExpenseCategory" asp-action="Add">Add Category</a></p>

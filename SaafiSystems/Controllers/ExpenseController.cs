@@ -27,6 +27,7 @@ namespace SaafiSystems.Controllers
 
         public IActionResult Add()
         {
+            IList<ExpenseCategory> expenseCategories = context.ExpenseCategories.ToList();
             AddExpenseViewModel addExpenseViewModel =
                 new AddExpenseViewModel(context.ExpenseCategories.ToList());
             return View(addExpenseViewModel);
@@ -37,7 +38,7 @@ namespace SaafiSystems.Controllers
         {
             if (ModelState.IsValid)
             {
-                ExpenseCategory newExpenseCategory =
+                ExpenseCategory newCategory =
                     context.ExpenseCategories.Single(c => c.ID == addExpenseViewModel.ExpenseCategoryID);
                 // Add the new cheese to my existing cheeses
                 Expense newExpense = new Expense
@@ -46,16 +47,16 @@ namespace SaafiSystems.Controllers
                     Date = addExpenseViewModel.Date,
                     Reference = addExpenseViewModel.Reference,
                     Owner = addExpenseViewModel.Owner,
-                    Name = addExpenseViewModel.Name,
+                  
                     Description = addExpenseViewModel.Description,
                     Amount = addExpenseViewModel.Amount,
-                    ExpenseCategory = newExpenseCategory
+                    ExpenseCategory = newCategory
                 };
 
                 context.Expenses.Add(newExpense);
                 context.SaveChanges();
 
-                return Redirect("/Expence");
+                return Redirect("/Expense");
             }
 
             return View(addExpenseViewModel);
@@ -79,7 +80,7 @@ namespace SaafiSystems.Controllers
 
             context.SaveChanges();
 
-            return Redirect("/");
+            return Redirect("/Expense");
         }
         [HttpPost]
         public IActionResult Category(int id)

@@ -20,13 +20,14 @@ namespace SaafiSystems.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            IList<Load> loads = context.Loads.Include(c => c.LoadCategory).ToList();
+            IList<Load> loads = context.Loads.Include(c => c.LoadCategory).Include(c => c.OwnerLoads).ToList();
 
             return View(loads);
         }
 
         public IActionResult Add()
         {
+            IList<LoadCategory> loadCategories = context.LoadCategories.ToList();
             AddLoadViewModel addLoadViewModel =
                 new AddLoadViewModel(context.LoadCategories.ToList());
             return View(addLoadViewModel);
@@ -77,7 +78,7 @@ namespace SaafiSystems.Controllers
 
             context.SaveChanges();
 
-            return Redirect("/");
+            return Redirect("/Load");
         }
         [HttpPost]
         public IActionResult Category(int id)

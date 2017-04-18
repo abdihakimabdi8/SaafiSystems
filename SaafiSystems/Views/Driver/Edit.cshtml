@@ -1,5 +1,86 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model SaafiSystems.ViewModels.AddDriverLoadViewModel
+
+
+<div class="page-header" style="background:white">
+    <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
+        Add Driver entries
+        <a asp-controller="Driver" asp-action="Add" class="hidden-xs btn btn-success pull-right">+ New Payroll Entry</a> <a asp-controller="Driver" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ New Payroll Entry</a>
+    </h1>
+</div>
+<form asp-controller="Driver" asp-action="Add" method="post">
+    <table class="table fee-table " style="width: 100%; max-width: 100%; margin-bottom: 20px; background-color: transparent; border-spacing: 0; border-collapse: collapse; box-sizing: border-box; display: table;border-collapse: separate; border-spacing: 2px; border-color: grey; font-size: 14px; line-height: 1.42857143;">
+
+
+        <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
+
+            <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="Date"></label>
+                        <input class="form-control" type="date" placeholder="date" asp-for="Date" />
+                        <span asp-validation-for="Date"></span>
+                    </div>
+                </td>
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="Reference"></label>
+                        <input class="form-control" asp-for="Reference" />
+                        <span asp-validation-for="Reference"></span>
+                    </div>
+                </td>
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="Description"></label>
+                        <input class="form-control" asp-for="Description" />
+                        <span asp-validation-for="Description"></span>
+                    </div>
+
+                </td>
+
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="LoadMiles"></label>
+                        <input class="form-control" asp-for="LoadMiles" />
+                        <span asp-validation-for="LoadMiles"></span>
+                    </div>
+                </td>
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="DeadMiles"></label>
+                        <input class="form-control" asp-for="DeadMiles" />
+                        <span asp-validation-for="DeadMiles"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label asp-for="Rate"></label>
+                        <input class="form-control" asp-for="Rate" />
+                        <span asp-validation-for="Rate"></span>
+                    </div>
+                </td>
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="DriverNameID"></label>
+                        <select asp-for="DriverNameID" asp-items="Model.DriverNames"></select>
+                    </div>
+                </td>
+                <td><input type="submit" class="hidden-xs btn btn-success" value=" + Submit Entry" /></td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</form>
+
+
+
+
+
+
+
+
+
+
+

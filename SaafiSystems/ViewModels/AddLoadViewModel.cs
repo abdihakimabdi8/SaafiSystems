@@ -10,22 +10,22 @@ namespace SaafiSystems.ViewModels
 {
     public class AddLoadViewModel
     {
-        private List<LoadCategory> list;
+
 
         [Required(ErrorMessage = "You must give your Load a date entry")]
         public DateTime Date { get; set; }
-        
+
 
         [Required(ErrorMessage = "You must give your Load a reference")]
         public string Reference { get; set; }
 
         [Required(ErrorMessage = "You must give your Load a description")]
+
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "You must provide an owner-operator")]
+        [Display(Name = "Owner")]
+        [Required(ErrorMessage = "You must give your Owner Operator a name")]
         public string Owner { get; set; }
-
-        public string Name { get; set; }
 
         [Required(ErrorMessage = "Provide Load Category")]
         [Display(Name = "Category")]
@@ -33,28 +33,29 @@ namespace SaafiSystems.ViewModels
 
         public LoadCategory LoadCategory { get; set; }
 
+       
+       
+      
+      
         public List<SelectListItem> LoadCategories { get; set; }
 
-        public AddLoadViewModel()
+
+        public AddLoadViewModel() { }
+        public AddLoadViewModel(IEnumerable<LoadCategory> loadCategories)
         {
 
             LoadCategories = new List<SelectListItem>();
 
             // <option value="0">Hard</option>
-            foreach (SelectListItem category in LoadCategories)
+            foreach (LoadCategory category in loadCategories)
             {
                 LoadCategories.Add(new SelectListItem
                 {
-                    Value = ((int)LoadCategoryID).ToString(),
-                    Text = Name.ToString()
+                    Value = ((int)category.ID).ToString(),
+                    Text = category.Name.ToString()
                 });
             }
-
-        }
-
-        public AddLoadViewModel(List<LoadCategory> list)
-        {
-            this.list = list;
         }
     }
+
 }

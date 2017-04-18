@@ -1,34 +1,20 @@
-﻿
-<h1>Current Loads</h1>
+﻿@model List<SaafiSystems.Models.Load>
 
-@if (ViewBag.loads.Count == 0)
-{
-    <p> No Loads Processed Yet!</p>
-}
-<ul>
-    @foreach (KeyValuePair<string, string> pair in ViewBag.loads)
-    {
-        <li>
-            @pair.Key  @pair.Value
-            <form method="post">
-                <input name="name" type="checkbox" value="load" />
-                <input type="submit" value=" Remove Me" /> <br />
-            </form>
-        </li>
-
-    }
-
-</ul>
 <h1>@ViewBag.title</h1>
+@if (Model.Count == 0)
+{
+    <p>No load entries to remove</p>
 
-<form method="post">
+}
 
-    @foreach (var load in Model)
+<form asp-controller="Load" asp-action="Remove" method="post">
+
+
+    @foreach (var entry in Model)
     {
-        <input type="checkbox" name="cheeseIds" id="@load.loadId" value="@load.loadId" />
-        <label for="@load.loadId">@load.Date</label>
+        <input type="checkbox" name="expenseIds" id="@entry.ID" value="@entry.ID" />
         <br />
     }
 
-    <input type="submit" value="Remove Selected Load(s)" />
+    <input type="submit" value="Remove Selected Trip(s)" />
 </form>

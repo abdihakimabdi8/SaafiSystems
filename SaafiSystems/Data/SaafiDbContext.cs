@@ -12,9 +12,21 @@ namespace SaafiSystems.Data
 
         public DbSet<Load> Loads { get; set; }
         public DbSet<LoadCategory> LoadCategories { get; set; }
+
+        public DbSet<Driver> Drivers { get; set; }
+        public DbSet<DriverName> DriverNames { get; set; }
+
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<OwnerLoad> OwnerLoads { get; set; }
+
         public SaafiDbContext(DbContextOptions<SaafiDbContext> options)
             : base(options)
-        { }
-
+        {
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OwnerLoad>()
+                .HasKey(c => new { c.LoadID, c.OwnerID });
+        }
     }
 }

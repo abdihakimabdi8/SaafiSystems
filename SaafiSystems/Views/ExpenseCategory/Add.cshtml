@@ -1,0 +1,19 @@
+﻿@model SaafiSystems.ViewModels.AddExpenseCategoryViewModel
+
+<div class="page-header" style="background:white">
+    <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
+        New Expense Category
+        <a asp-controller="ExpenseCategory" asp-action="Add" class="hidden-xs btn btn-primary pull-right">+ Add Category</a> <a asp-controller="Driver" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ Add Driver</a>
+        <a asp-controller="Expense" asp-action="Add" class="hidden-xs btn btn-success pull-right">+ New Expense Entry</a> <a asp-controller="Driver" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ New Payroll Entry</a>
+    </h1>
+</div>
+<form asp-controller="ExpenseCategory" asp-action="Add" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <input type="submit" value="Submit Expense Category" class="hidden-xs btn btn-success"/>
+
+</form>

@@ -17,7 +17,7 @@ namespace SaafiSystems.ViewModels
         [Required(ErrorMessage = "Please provide a expense catogory")]
         public string Name { get; set; }
 
-        public Expense Expenses { get; set; }
+        public List<Expense> Expenses { get; set; }
 
     }
 }

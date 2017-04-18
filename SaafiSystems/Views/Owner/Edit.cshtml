@@ -1,0 +1,14 @@
+﻿@model SaafiSystems.ViewModels.AddOwnerViewModel
+
+
+<form asp-controller="Owner" asp-action="Add" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <input type="submit" class="hidden-xs btn btn-success" value=" + Submit New Owner" />
+
+
+</form>

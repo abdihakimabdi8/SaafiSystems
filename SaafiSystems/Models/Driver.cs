@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SaafiSystems.Models;
-using SaafiSystems.ViewModels;
-
 
 namespace SaafiSystems.Models
 {
     public class Driver
     {
+        public int ID { get; set; }
         public DateTime Date { get; set; }
-        public string Refernce { get; set; }
+        public string Reference { get; set; }
         public string Description { get; set; }
-        public string DriverName { get; set; }
-        public string LoadMiles { get; set; }
-        public string DeadMiles { get; set; }
-        public string Rate { get; set; }
-        public int DriverId { get; set; }
+        public int LoadMiles { get; set; }
+        public int DeadMiles { get; set; }
+        public int Rate { get; set; }
+        
 
-        }
+
+        public int DriverNameID { get; set; }
+        public DriverName DriverName { get; set; }
     }
+ }

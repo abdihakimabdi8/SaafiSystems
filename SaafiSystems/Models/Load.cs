@@ -15,9 +15,11 @@ namespace SaafiSystems.Models
         public string  Reference { get; set; }
         public string  Description { get; set; }
         public string Owner { get; set; }
+       
 
         public int LoadCategoryID { get; set; }
         public LoadCategory LoadCategory { get; set; }
 
+        public IList<OwnerLoad> OwnerLoads { get; set; }
     }
 }

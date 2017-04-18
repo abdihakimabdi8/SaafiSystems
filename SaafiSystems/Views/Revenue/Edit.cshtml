@@ -1,44 +1,81 @@
-﻿@*@model SaafiLogistics.ViewModels.AddLoadViewModel
+﻿@model SaafiSystems.ViewModels.AddRevenueViewModel
 
-<h1>Add Load</h1>
 
-<form asp-controller="Porcess" asp-action="Add" method="post">
+<div class="page-header" style="background:white">
+    <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
+        Add Revenue
+        <a asp-controller="RevenueCategory" asp-action="Add" class="hidden-xs btn btn-primary pull-right">+ Add Category</a> <a asp-controller="RevenueCategory" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ Add Category</a>
+        <a asp-controller="Revenue" asp-action="Add" class="hidden-xs btn btn-success pull-right">+ New Revenue Entry</a> <a asp-controller="Revenue" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ New Revenue Entry</a>
 
-    <div class="form-group">
-        <label asp-for="Date"></label>
-        <input class="form-control" asp-for="Date" />
-        <span asp-validation-for="Date"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Number"></label>
-        <input class="form-control" asp-for="Number" />
-        <span asp-validation-for="Number"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <input class="form-control" asp-for="Description" />
-        <span asp-validation-for="Description"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Owner"></label>
-        <input class="form-control" asp-for="Owner" />
-        <span asp-validation-for="Owner"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Pay"></label>
-        <input class="form-control" asp-for="Pay" />
-        <span asp-validation-for="Pay"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Advance"></label>
-        <input class="form-control" asp-for="Advance" />
-        <span asp-validation-for="Advance"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Net"></label>
-        <input class="form-control" asp-for="Net" />
-        <span asp-validation-for="Net"></span>
-    </div>
-    <input type="submit" value="Add Load" />
+    </h1>
+</div>
+<form asp-controller="Revenue" asp-action="Add" method="post">
+    <table class="table fee-table " style="width: 100%; max-width: 100%; margin-bottom: 20px; background-color: transparent; border-spacing: 0; border-collapse: collapse; box-sizing: border-box; display: table;border-collapse: separate; border-spacing: 2px; border-color: grey; font-size: 14px; line-height: 1.42857143;">
 
-</form>*@
+
+        <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
+
+            <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="Date"></label>
+                        <input class="form-control" type="date" asp-for="Date" />
+                        <span asp-validation-for="Date"></span>
+                    </div>
+                </td>
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="Reference"></label>
+                        <input class="form-control" asp-for="Reference" />
+                        <span asp-validation-for="Reference"></span>
+                    </div>
+                </td>
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="Owner"></label>
+                        <input class="form-control" asp-for="Owner" />
+                        <span asp-validation-for="Owner"></span>
+                    </div>
+
+                </td>
+
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="Description"></label>
+                        <input class="form-control" asp-for="Description" />
+                        <span asp-validation-for="Description"></span>
+                    </div>
+                </td>
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="Amount"></label>
+                        <input class="form-control" asp-for="Amount" />
+                        <span asp-validation-for="Amount"></span>
+                    </div>
+                </td>
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="RevenueCategoryID"></label>
+                        <select asp-for="RevenueCategoryID" asp-items="Model.RevenueCategories"></select>
+                    </div>
+
+
+                </td>
+                <td>
+                    <label></label>
+                    <input type="submit" class="hidden-xs btn btn-success" value=" + Submit Entry" />
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</form>
+
+
+
+
+
+

@@ -10,13 +10,12 @@ namespace SaafiSystems.ViewModels
 {
     public class AddRevenueViewModel
     {
-        private List<RevenueCategory> list;
 
         [Required]
         [Display]
         public DateTime Date { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Provide reference number")]
         [Display]
         public string Reference { get; set; }
 
@@ -25,15 +24,11 @@ namespace SaafiSystems.ViewModels
         [Display]
         public string Owner { get; set; }
 
-        [Required]
-        [Display(Name = "Revenue")]
-        public string Name { get; set; }
-
         [Required(ErrorMessage = "You must give your Revenue a description")]
         public string Description { get; set; }
 
 
-        [Required]
+        [Required(ErrorMessage = "Provide revenue Amount")]
         [Display]
         public int Amount { get; set; }
 
@@ -46,26 +41,22 @@ namespace SaafiSystems.ViewModels
 
         public List<SelectListItem> RevenueCategories { get; set; }
 
-        public AddRevenueViewModel()
+        public AddRevenueViewModel() { }
+        public AddRevenueViewModel(IEnumerable<RevenueCategory> revenueCategories)
         {
 
             RevenueCategories = new List<SelectListItem>();
 
             // <option value="0">Hard</option>
-            foreach (SelectListItem category in RevenueCategories)
+            foreach (RevenueCategory category in revenueCategories)
             {
                 RevenueCategories.Add(new SelectListItem
                 {
-                    Value = ((int)RevenueCategoryID).ToString(),
-                    Text = Name.ToString()
+                    Value = ((int)category.ID).ToString(),
+                    Text = category.Name.ToString()
                 });
             }
 
-        }
-
-        public AddRevenueViewModel(List<RevenueCategory> list)
-        {
-            this.list = list;
         }
     }
 }

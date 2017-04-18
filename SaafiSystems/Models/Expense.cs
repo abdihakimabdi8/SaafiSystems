@@ -11,7 +11,6 @@ namespace SaafiSystems.Models
         public DateTime Date { get; set; }
         public string Reference { get; set; }
         public string Owner { get; set; }
-        public string Name { get; set; }
         public string Description { get; set; }
         public int Amount { get; set; }
 

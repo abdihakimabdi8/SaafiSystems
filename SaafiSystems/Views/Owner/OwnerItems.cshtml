@@ -1,0 +1,56 @@
+﻿@model SaafiSystems.ViewModels.OwnerItemViewModel
+
+
+<div class="page-header" style="background:white">
+    <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
+     @{ ViewBag.Title = Model.Owner.Name;}
+        <a asp-controller="Owner" asp-action="AddItem" asp-route-id="@Model.Owner.ID" class="hidden-xs btn btn-primary pull-right">+ Add New Item</a> <a asp-controller="Owner" asp-action="AddItem" class="visible-xs-block mobile-add btn-block btn btn-success">+ Add New Item</a>
+        <a asp-controller="Owner" asp-action="Add" class="hidden-xs btn btn-success pull-right">+ New Owner</a> <a asp-controller="Owner" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ New Owner</a>
+    </h1>
+</div>
+
+@if (Model.Items.Count == 0)
+{
+    <p>No load entries yet!</p>
+}
+<form asp-controller="Load" asp-action="Remove" method="post">
+    <table class="table">
+
+        <tr>
+            <th>Date</th>
+            <th>Reference</th>
+
+            <th>Description</th>
+            <th>Owner</th>
+            <th>Category</th>
+            <td>Action</td>
+        </tr>
+
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Load.Date</td>
+                <td>@item.Load.Reference</td>
+
+                <td>@item.Load.Description</td>
+                <td>@item.Load.Owner</td>
+                <td>@item.Load.LoadCategory</td>
+
+                <td>
+                    <input type="checkbox" name="loadIds" id="@item.Load.ID" value="@item.Load.ID" class="btn btn-danger btn-sm" />
+                    <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+                </td>
+                <td>
+                    <input type="checkbox" name="loadIds" id="@item.Load.ID" value="@item.Load.ID" class="btn btn-danger btn-sm" />
+                    <input type="submit" value="Edit" class="btn btn-info btn-sm" />
+                </td>
+            </tr>
+        }
+    </table>
+
+    <p><a asp-controller="Load" asp-action="Add">Add Trip</a></p>
+
+</form>
+
+
+<a asp-controller="Owner"> <span class="btn btn-info btn-sm">Owner Operators</span> </a>

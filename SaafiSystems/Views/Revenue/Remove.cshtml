@@ -1,32 +1,19 @@
-﻿
+﻿@model List<SaafiSystems.Models.Revenue>
 <h1>Current Loads</h1>
 
-@if (ViewBag.loads.Count == 0)
+@if (Model.Count == 0)
 {
-    <p> No Loads Processed Yet!</p>
+    <p> No Revenue entries yet Processed Yet!</p>
 }
-<ul>
-    @foreach (KeyValuePair<string, string> pair in ViewBag.loads)
-    {
-        <li>
-            @pair.Key  @pair.Value
-            <form method="post">
-                <input name="name" type="checkbox" value="load" />
-                <input type="submit" value=" Remove Me" /> <br />
-            </form>
-        </li>
 
-    }
-
-</ul>
 <h1>@ViewBag.title</h1>
 
 <form method="post">
 
     @foreach (var load in Model)
     {
-        <input type="checkbox" name="cheeseIds" id="@load.loadId" value="@load.loadId" />
-        <label for="@load.loadId">@load.Date</label>
+        <input type="checkbox" name="cheeseIds" id="@load.ID" value="@load.ID" />
+        <label for="@load.ID">@load.Date</label>
         <br />
     }
 

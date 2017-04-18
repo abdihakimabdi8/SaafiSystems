@@ -6754,4 +6754,10 @@ button.close {
     display: none !important;
   }
 }
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
 /*# sourceMappingURL=bootstrap.css.map */

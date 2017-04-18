@@ -43,17 +43,35 @@ namespace SaafiSystems.Controllers
                 RevenueCategory newRevenueCategory = new RevenueCategory
                 {
                     Name = addRevenueCategoryViewModel.Name,
-
-
                 };
 
                 context.RevenueCategories.Add(newRevenueCategory);
                 context.SaveChanges();
 
-                return Redirect("/");
+                return Redirect("/RevenueCategory");
             }
 
             return View(addRevenueCategoryViewModel);
+        }
+        public IActionResult Remove()
+        {
+            ViewBag.title = "Remove Categories";
+            ViewBag.revenueCategories = context.RevenueCategories.ToList();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Remove(int[] revenueCategoryIds)
+        {
+            foreach (int revenueCategoryId in revenueCategoryIds)
+            {
+                RevenueCategory theRevenueCategory = context.RevenueCategories.Single(c => c.ID == revenueCategoryId);
+                context.RevenueCategories.Remove(theRevenueCategory);
+            }
+
+            context.SaveChanges();
+
+            return Redirect("/RevenueCategory");
         }
     }
 }

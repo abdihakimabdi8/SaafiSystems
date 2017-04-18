@@ -17,7 +17,7 @@ namespace SaafiSystems.ViewModels
         [Required(ErrorMessage = "Please provide a load catogory")]
         public string Name { get; set; }
 
-        public Load Loads { get; set; }
+        public List<Load> Loads { get; set; }
 
     }
 }

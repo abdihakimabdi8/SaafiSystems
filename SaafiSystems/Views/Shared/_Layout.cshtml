@@ -39,12 +39,18 @@
                             <li><a asp-controller="Remove" asp-action="Index">Remove Trip</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a asp-controller="Reports" asp-action="Index">Reports</a></li>
+                            <li><a asp-controller="Revenue" asp-action="Add">Add Revenue</a></li>
+                            <li><a asp-controller="List" asp-action="Index">List</a></li>
+                            <li><a asp-controller="Expense" asp-action="Add">Add Expense</a></li>
+                            <li><a asp-controller="DriverName" asp-action="Add">Add Driver</a></li>
+                            <li><a asp-controller="Edit" asp-action="Index">Edit</a></li>
                         </ul>
 
                     </div>
 
                 </div>
             </div>
+
             <div class="navbar-collapse collapse">
 
                 <ul class="nav navbar-nav"><li><a asp-area="" asp-controller="Home" asp-action="Index"> Saafi</a></li></ul>
@@ -56,17 +62,16 @@
                 </form>
                 <ul class="nav navbar-nav">
 
-
-                    <li><a asp-controller="List" asp-action="Index">List</a></li>
                     <li><a asp-controller="Load" asp-action="Add">Add Trip</a></li>
                     <li><a asp-controller="Remove" asp-action="Index">Remove</a></li>
-                    <li><a asp-controller="Edit" asp-action="Index">Edit</a></li>
-
+                    <li><a asp-controller="Revenue" asp-action="Index">Revenue</a></li>  
+                    <li><a asp-controller="Expense" asp-action="Index">Expense</a></li>
                 </ul>
-                @await Html.PartialAsync("_LoginPartial")
+               <ul class="nav navbar-nav navbar-right"><li>@await Html.PartialAsync("_LoginPartial")</li></ul> 
             </div>
         </div>
-        <div class="container-fluid">
+        </div>
+        @*<div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3 col-lg-2">
                     <nav class="navbar navbar-default navbar-fixed-side">
@@ -74,17 +79,17 @@
                             <ul class="sidemenu-nav btn-group-sm" style=" position : absolute; top: 0; width: 200px; margin: 0; margin-top: 10px; padding: 0; list-style: none; display: block; color: #595952; font-family: sans-serif; font-weight: 400; ">
                                 <li><br /></li>
                                 <li> <strong><a asp-controller="List">Trips<span class="pull-right btn-xs btn-default quick"></span></a><br /></strong></li>
-                                <li> <strong><a asp-controller="Process">Owner Operator<span class="pull-right btn-xs btn-default quick"></span></a><br /></strong></li>
-                                <li> <strong><a asp-controller="Driver" class="navbar-link">Company Driver</a><br /></strong> </li>
+                                <li> <strong><a asp-controller="Process">Company Driver <span class="pull-right btn-xs btn-default quick"></span></a><br /></strong></li>
+                                <li> <strong><a asp-controller="Driver" class="navbar-link">Owner Operator</a><br /></strong> </li>
                                 <li><strong><a asp-controller="Reports" class="navbar-link">Reports </a><br /> </strong></li>
                                 <li><strong><a asp-controller="Load" asp-action="Add" class="navbar-link">Process Load</a><br /> </strong> </li>
                                 <li><strong><a asp-controller="Load" asp-action="Remove" class="navbar-link">Remove Load</a><br />  </strong></li>
                                 <li><strong><a asp-controller="Load" asp-action="Edit" class="navbar-link">Edit Load</a><br />  </strong></li>
-                                <span></span>
+                                
                             </ul>
                         </div>
                     </nav>
-                </div>
+                </div>*@
                 <div class="jumbotron span12 pagination-centered" style="background:white">
 
                 </div>
@@ -97,12 +102,14 @@
                         <button type="button" class="btn btn-default">This year</button>
                     </div>
                     @RenderBody()
+                    </div>
+        
                     <hr />
                     <footer>
                         <p>&copy; 2017 - SaafiSystems</p>
                     </footer>
-                </div>
-
+       
+    
                 <environment names="Development">
                     <script src="~/lib/jquery/dist/jquery.js"></script>
                     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

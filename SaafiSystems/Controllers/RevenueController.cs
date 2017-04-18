@@ -45,7 +45,6 @@ namespace SaafiSystems.Controllers
                     Date = addRevenueViewModel.Date,
                     Reference = addRevenueViewModel.Reference,
                     Owner = addRevenueViewModel.Owner,
-                    Name = addRevenueViewModel.Name,
                     Description = addRevenueViewModel.Description,
                     Amount = addRevenueViewModel.Amount,
                     RevenueCategory = newRevenueCategory
@@ -78,7 +77,7 @@ namespace SaafiSystems.Controllers
 
             context.SaveChanges();
 
-            return Redirect("/");
+            return Redirect("/Revenue");
         }
         [HttpPost]
         public IActionResult Category(int id)
