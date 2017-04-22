@@ -1,0 +1,82 @@
+﻿@model IEnumerable<SaafiSystems.Models.Load>
+
+
+
+            Search Loads:
+            <form asp-action="Index" method="get">
+                <div class="form-actions no-color">
+        <p>
+            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+<a asp-action="Index">Back to Full List</a>
+       
+
+
+
+
+
+<div style="border-bottom: 3px solid #e8e8e8; padding-bottom: 9px;
+    margin: 40px 0 20px; display: block; color: #595952; font-size: 34px;
+    line-height: 1.42857143; box-sizing: border-box;">
+    All Reports
+</div>
+<table class="table table-striped">
+
+    <tr>
+        <th>Date</th>
+        <th>Reference</th>
+
+        <th>Description</th>
+        <th>Owner</th>
+        <th>Amount</th>
+
+        <th class="pull-right">Action</th>
+        <th></th>
+
+    </tr>
+
+    @foreach (var load in Model)
+    {
+        <tr>
+            <td>@load.Date</td>
+            <td>@load.Reference</td>
+
+            <td>@load.Description</td>
+            <td>@load.Owner</td>
+            <td>@load.Amount</td>
+
+            <td> </td>
+            <td></td>
+
+            <td>
+                <input type="checkbox" name="loadIds" id="@load.ID" value="@load.ID" class="btn btn-danger btn-sm" />
+                <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+            </td>
+            <td>
+                <input type="checkbox" name="loadIds" id="@load.ID" value="@load.ID" class="btn btn-danger btn-sm" />
+                <input type="submit" value="Edit" class="btn btn-info btn-sm" />
+            </td>
+        </tr>
+    }
+</table>
+
+<strong style=" color: #0090df;color: #337ab7; text-decoration: none;background-color: transparent; box-sizing: border-box; color: -webkit-link;  cursor: auto; font-weight: bold;    font-weight: bold; font-size: 18px; line-height: 2;     box-sizing: border-box;">
+
+
+    <a>
+        Profit and Loss
+    </a><br />
+    <a asp-controller="Reports" asp-action="expense">
+        Expense Report
+    </a><br />
+    <a>
+        Fuel Mileage
+    </a><br />
+    <a>
+        IFTA Report
+    </a><br />
+</strong>

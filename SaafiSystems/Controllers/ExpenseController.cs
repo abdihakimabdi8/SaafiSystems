@@ -5,6 +5,7 @@ using SaafiSystems.ViewModels;
 using SaafiSystems.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace SaafiSystems.Controllers
 {
@@ -20,7 +21,7 @@ namespace SaafiSystems.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            IList<Expense> expenses = context.Expenses.Include(c => c.ExpenseCategory).ToList();
+            IList<Expense> expenses = context.Expenses.Include(c => c.ExpenseCategory).Include(c => c.Owner).ToList();
 
             return View(expenses);
         }
@@ -103,6 +104,31 @@ namespace SaafiSystems.Controllers
             ViewBag.Title = "Expenses in Category" + theCategory.Name;
             return View("Index", theCategory.Expenses);
         }
+      
+        public ViewResult Search(string searchString)
+        {
+           //IList<Expense> expenses = context.Expenses.Include(c => c.ExpenseCategory).Include(c => c.Owner).ToList();
+            var expenses = from c in context.Expenses.Include(c => c.ExpenseCategory).Include(c => c.Owner).ToList()
+            select c;
 
+            ViewBag.CurrentFilter = searchString;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                expenses = context.Expenses.Where(c =>
+               c.Reference.Contains(searchString)
+                ||
+
+               c.Date.ToString().Contains(searchString) ||
+
+               c.Description.Contains(searchString) ||
+
+               c.Owner.Contains(searchString));
+
+          
+            }
+            
+            return View(expenses);
+        }
     }
 }

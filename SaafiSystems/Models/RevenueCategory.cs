@@ -11,7 +11,7 @@ namespace SaafiSystems.Models
         public string Name { get; set; }
 
         public IList<Revenue> Revenues { get; set; }
-
+        public IList<Load> Loads { get; set; }
 
     }
 }

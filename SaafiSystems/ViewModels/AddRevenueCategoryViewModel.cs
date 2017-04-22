@@ -17,7 +17,8 @@ namespace SaafiSystems.ViewModels
         [Required(ErrorMessage = "Please provide a revenue catogory")]
         public string Name { get; set; }
 
-        public List<Revenue> Revenues { get; set; }
+       
+        public List<Load> Loads { get; set; }
 
     }
 }

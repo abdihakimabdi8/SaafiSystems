@@ -3,7 +3,16 @@
 <h1>@ViewBag.Title</h1>
 <div class="page-header" style="background:white">
     <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
-        Trip Entries
+        Trips Entries
+        <form asp-controller="Reports" asp-action="Index" class="navbar-form navbar-left" role="search" method="get">
+            <div class="form-group">
+                <p>
+                    <input type="text" name="searchString" class="form-control" placeholder="Search your trips, loads and more" value="@ViewData["CurrentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-group-xs " />
+                </p>
+            </div>
+
+        </form>
         <a asp-controller="LoadCategory" asp-action="Add" class="hidden-xs btn btn-primary pull-right">+ Add Trip Category</a> <a asp-controller="LoadCategory" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ Add Load Category</a>
         <a asp-controller="Load" asp-action="Add" class="hidden-xs btn btn-success pull-right">+ New Trip</a> <a asp-controller="Load" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ New Trip</a>
     </h1>
@@ -15,7 +24,7 @@
 }
 <form asp-controller="Load" asp-action="Remove">
 
-    <table class="table">
+    <table class="table table-striped">
 
         <tr>
             <th>Date</th>
@@ -24,6 +33,8 @@
             <th>Description</th>
             <th>Owner</th>
             <th>Category</th>
+            <th class="pull-right">Action</th>
+            <th></th>
             
         </tr>
 
@@ -48,6 +59,25 @@
         }
     </table>
 
-    <p><a asp-controller="Load" asp-action="Add">Add Trip</a></p>
+    <p><a asp-controller="Load" asp-action="Add" class="btn btn-info btn-sm">Add Trip</a></p>
 
 </form>
+@*@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled btn">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled btn">
+    Next
+</a>*@

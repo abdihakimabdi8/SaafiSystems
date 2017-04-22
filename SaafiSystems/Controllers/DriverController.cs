@@ -98,57 +98,49 @@ namespace SaafiSystems.Controllers
                 .Include(cat => cat.Drivers)
                 .Single(cat => cat.ID == id);
 
-            /* 
-             * IList<Cheese> theCheese = Context.Cheeses
-             * .Include(c => c.Category)
-             * .Single(c => c.CategoryID ==id)
-             .ToList();*/
 
             ViewBag.Title = "Entries for Driver" + theDriver.Name;
             return View("Index", theDriver.Drivers);
         }
 
+        public IActionResult ViewDriver()
+        {
+            IList<DriverName> driverName = context.DriverNames.ToList();
+            ViewDriverViewModel viewDriverLoadsViewModel = new ViewDriverViewModel(context.DriverNames.ToList());
 
-        //public IActionResult Edit(int driverId)
-        //{
-        //     ViewBag.title = "Edit Driver Entries";
-        //    IList<DriverName> driverNames = context.DriverNames.ToList();
-        //    var driverEntry = context.Drivers.Where(c => c.ID == driverId).FirstOrDefault();
-        //    AddDriverLoadViewModel addDriverLoadViewModel =
-        //        new AddDriverLoadViewModel(context.Drivers.Where(c => c.ID == driverId).FirstOrDefault());
-        //    return View(addDriverLoadViewModel);
-            
-           
-        //}
+            return View(viewDriverLoadsViewModel);
 
-        //[HttpPost]
-        //public IActionResult Edit(AddDriverLoadViewModel addDriverLoadViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        DriverName newDriver =
-        //            context.DriverNames.Single(c => c.ID == addDriverLoadViewModel.DriverNameID);
-        //        // Add the new cheese to my existing cheeses
-        //        Driver newTrip = new Driver
-        //        {
+        }
 
-        //            Date = addDriverLoadViewModel.Date,
-        //            Reference = addDriverLoadViewModel.Reference,
-        //            Description = addDriverLoadViewModel.Description,
-        //            LoadMiles = addDriverLoadViewModel.LoadMiles,
-        //            DeadMiles = addDriverLoadViewModel.DeadMiles,
 
-        //            Rate = addDriverLoadViewModel.Rate,
-        //            DriverName = newDriver
-        //        };
+        [HttpPost]
+        public IActionResult ViewDriver(ViewDriverViewModel viewDriverLoadsViewModel)
+        {
+            if (ModelState.IsValid)
+            {
 
-        //        context.Drivers.Add(newTrip);
-        //        context.SaveChanges();
+                return Redirect(string.Format("/Driver/DriverTrips/{0}", viewDriverLoadsViewModel.DriverNameID));
+            }
 
-        //        return Redirect("/Driver");
-        //    }
+            return View(viewDriverLoadsViewModel);
+        }
 
-        //    return View(addDriverLoadViewModel);
-        //}
+        public IActionResult DriverTrips(int id)
+        {
+
+            List<Driver> drivers = context.
+                Drivers
+                .Include(c => c.DriverName)
+                .Where(c => c.DriverNameID == id).
+                ToList();
+            DriverName driverName = context.DriverNames.Single(c => c.ID == id);
+            DriverLoadsViewModel driverLoads = new DriverLoadsViewModel
+            {
+                Drivers = drivers,
+             
+            };
+            ViewBag.title = driverName.Name;
+            return View(driverLoads);
+        }
     }
 }

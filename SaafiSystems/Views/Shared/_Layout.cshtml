@@ -54,12 +54,17 @@
             <div class="navbar-collapse collapse">
 
                 <ul class="nav navbar-nav"><li><a asp-area="" asp-controller="Home" asp-action="Index"> Saafi</a></li></ul>
-                <form class="navbar-form navbar-left" role="search">
+                <form asp-controller="Reports" asp-action="Index" class="navbar-form navbar-left" role="search" method="get">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search your trips, loads and more">
-                    </div>
-                    <a asp-controller="Search" asp-action="Index" class="btn btn-default">Search<span class="nav navbar-nav"></span></a>
-                </form>
+                        <p>
+                            <input type="text" name="searchString" class="form-control" placeholder="Search your trips, loads and more" value="@ViewData["CurrentFilter"]" />
+                     <input type="submit" value="Search" class="btn btn-group-xs "/>  
+                        </p>
+                        </div>
+                        
+                    </form>
+                    
+               
                 <ul class="nav navbar-nav">
 
                     <li><a asp-controller="Load" asp-action="Add">Add Trip</a></li>
@@ -90,6 +95,7 @@
                         </div>
                     </nav>
                 </div>*@
+    
                 <div class="jumbotron span12 pagination-centered" style="background:white">
 
                 </div>

@@ -2,6 +2,14 @@
 <div class="page-header" style="background:white">
     <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
         Owner Operators
+        <form asp-controller="Reports" asp-action="Index" class="navbar-form navbar-left" role="search" method="get">
+            <div class="form-group">
+                <p>
+                    <input type="text" name="searchString" class="form-control" placeholder="Search your trips, loads and more" value="@ViewData["CurrentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-group-xs " />
+                </p>
+            </div>
+        </form>
         <a asp-controller="Owner" asp-action="Add" class="hidden-xs btn btn-primary pull-right">+ Add Owner</a> <a asp-controller="Owner" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ Add Owner</a>
         <a asp-controller="Load" asp-action="Add" class="hidden-xs btn btn-success pull-right">+ New Trip</a> <a asp-controller="Load" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ New Trip</a>
     </h1>
@@ -14,12 +22,14 @@
 
 }
 <form asp-controller="Owner" asp-action="Remove" method="post">
-    <table class="table ">
+    <table class="table table-striped ">
         <tr>
             <th>Reference</th>
             <th>Owner Operator</th>
-            <th>Action</th>
-            <th><a asp-controller="Owner" asp-action="ViewOwner" ><span class="hidden-xs btn btn-info pull-right">Assign Loads</span></a></th>
+            <th >Action</th>
+            
+            <th class="pull-right"><a asp-controller="Owner" asp-action="ViewOwner" ><span class="hidden-xs btn btn-info pull-right">Assign Loads</span></a></th>
+       <th></th>
         </tr>
 
         @foreach (var owner in Model)
@@ -33,14 +43,15 @@
                     <td><a asp-controller="Owner"
                         asp-action="ViewOwner"
                         asp-route-id="@owner.ID">@owner.Name</a>  </td>
-                <td>
+                <td >
                     <input type="checkbox" name="ownerIds" id="@owner.ID" value="@owner.ID" class="btn btn-danger btn-sm" />
                     <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
                 </td>
-                <td>
+                <td >
                     <input type="checkbox" name="ownerIds" id="@owner.ID" value="@owner.ID" class="btn btn-danger btn-sm" />
                     <input type="submit" value="Edit" class="btn btn-info btn-sm" />
-                </td>
+                </td >
+                <td></td>
             </tr>
 
         }
@@ -51,4 +62,4 @@
 
 
 
-<p><a asp-controller="Owner" asp-action="Add"> + Add Owner</a></p>
+<p><a asp-controller="Owner" asp-action="Add" class="btn btn-info btn-sm" > + Add Owner</a></p>

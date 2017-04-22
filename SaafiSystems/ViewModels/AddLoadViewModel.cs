@@ -27,16 +27,17 @@ namespace SaafiSystems.ViewModels
         [Required(ErrorMessage = "You must give your Owner Operator a name")]
         public string Owner { get; set; }
 
+        [Display(Name = "Amount")]
+        [Required(ErrorMessage = "You must give your Revenue amount for this trip")]
+        public int Amount { get; set; }
+
         [Required(ErrorMessage = "Provide Load Category")]
         [Display(Name = "Category")]
         public int LoadCategoryID { get; set; }
 
         public LoadCategory LoadCategory { get; set; }
 
-       
-       
-      
-      
+
         public List<SelectListItem> LoadCategories { get; set; }
 
 
@@ -54,8 +55,10 @@ namespace SaafiSystems.ViewModels
                     Value = ((int)category.ID).ToString(),
                     Text = category.Name.ToString()
                 });
+  
             }
-        }
-    }
 
-}
+        }
+        
+    }
+ }

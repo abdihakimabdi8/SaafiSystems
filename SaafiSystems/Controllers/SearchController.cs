@@ -1,7 +1,8 @@
 ﻿//using Microsoft.AspNetCore.Mvc;
-//using SaafiLogistics.Models;
-//using SaafiLogistics.Data;
-//using SaafiLogistics.ViewModels;
+//using SaafiSystems.Models;
+//using SaafiSystems.Data;
+//using SaafiSystems.ViewModels;
+//using System.Linq;
 
 //namespace SaafiSystems.Controllers
 //{
@@ -9,17 +10,17 @@
 //    {
 
 //        // Our reference to the data store
-//        private static LoadData loadData;
+//        private static SaafiDbContext context;
 
-//        static SearchController()
+//        public SearchController(SaafiDbContext dbContext)
 //        {
-//            loadData = LoadData.GetInstance();
+//          context = dbContext;
 //        }
 
 //        // Display the search form
 //        public IActionResult Index()
 //        {
-//            SearchLoadsViewModel loadsViewModel = new SearchLoadsViewModel();
+//            SearchLoadsViewModel loadsViewModel = new SearchLoadsViewModel(context.LoadFieldTypes.ToList());
 //            loadsViewModel.Title = "Search";
 //            return View(loadsViewModel);
 //        }
@@ -27,8 +28,23 @@
 //        // Process search submission and display search results
 //        public IActionResult Results(SearchLoadsViewModel loadsViewModel)
 //        {
+//            if (LoadFieldType.Name == "Date")
+//                return View(context.Loads.Where(c => c.Date.ToString() == searchTerm || searchTerm == null).ToList());
+//            if (searchBy == "Reference")
+//                return View(context.Loads.Where(c => c.Reference.ToString() == searchTerm || searchTerm == null).ToList());
 
-//            if (loadsViewModel.Column.Equals(LoadFieldType.All) || loadsViewModel.Value.Equals(""))
+//            if (searchBy == "Description")
+//                return View(context.Loads.Where(c => c.Description.ToString() == searchTerm || searchTerm == null).ToList());
+
+//            if (searchBy == "Owner")
+//                return View(context.Loads.Where(c => c.Owner.ToString() == searchTerm || searchTerm == null).ToList());
+
+//            if (searchBy == "Amount")
+//                return View(context.Loads.Where(c => c.Amount.ToString() == searchTerm || searchTerm == null).ToList());
+//            else
+//                return View(context.Loads.Where(c => c.LoadCategory.ToString() == searchTerm || searchTerm == null).ToList());
+
+//            if (loadsViewModel.LoadFieldType.Equals(LoadFieldType.All) || loadsViewModel.Value.Equals(""))
 //            {
 //                loadsViewModel.Loads = loadData.FindByValue(loadsViewModel.Value);
 //            }

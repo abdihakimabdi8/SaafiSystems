@@ -19,6 +19,9 @@ namespace SaafiSystems.Data
         public DbSet<Owner> Owners { get; set; }
         public DbSet<OwnerLoad> OwnerLoads { get; set; }
 
+        public DbSet<OwnerExpense> OwnerExpenses { get; set; }
+
+        
         public SaafiDbContext(DbContextOptions<SaafiDbContext> options)
             : base(options)
         {
@@ -27,6 +30,9 @@ namespace SaafiSystems.Data
         {
             modelBuilder.Entity<OwnerLoad>()
                 .HasKey(c => new { c.LoadID, c.OwnerID });
+            modelBuilder.Entity<OwnerExpense>()
+                .HasKey(c => new { c.ExpenseID, c.OwnerID });
         }
+
     }
 }

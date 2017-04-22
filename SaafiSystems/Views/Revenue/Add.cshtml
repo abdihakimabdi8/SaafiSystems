@@ -10,7 +10,7 @@
     </h1>
 </div>
 <form asp-controller="Revenue" asp-action="Add" method="post">
-    <table class="table fee-table " style="width: 100%; max-width: 100%; margin-bottom: 20px; background-color: transparent; border-spacing: 0; border-collapse: collapse; box-sizing: border-box; display: table;border-collapse: separate; border-spacing: 2px; border-color: grey; font-size: 14px; line-height: 1.42857143;">
+    <table class="table table-striped " style="width: 100%; max-width: 100%; margin-bottom: 20px; background-color: transparent; border-spacing: 0; border-collapse: collapse; box-sizing: border-box; display: table;border-collapse: separate; border-spacing: 2px; border-color: grey; font-size: 14px; line-height: 1.42857143;">
 
 
         <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
@@ -57,7 +57,7 @@
                 <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
                     <div class="form-group">
                         <label asp-for="RevenueCategoryID"></label>
-                        <select asp-for="RevenueCategoryID" asp-items="Model.RevenueCategories"></select>
+                        <select class="form-control" asp-for="RevenueCategoryID" asp-items="Model.RevenueCategories"></select>
                     </div>
 
 

@@ -1,0 +1,43 @@
+﻿@model SaafiSystems.ViewModels.ViewDriverViewModel
+
+<div class="page-header" style="background:white">
+    <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
+      
+        <a asp-controller="DriverName" asp-action="Add" class="hidden-xs btn btn-primary pull-right">+ Add Driver</a> <a asp-controller="DriverName" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ Add Driver</a>
+        <a asp-controller="Driver" asp-action="Add" class="hidden-xs btn btn-success pull-right">+ New Payroll Entry</a> <a asp-controller="Driver" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ New Payroll Entry</a>
+
+    </h1>
+</div>
+
+<form asp-controller="Driver" asp-action="ViewDriver" method="post">
+    <table class="table fee-table " style="width: 100%; max-width: 100%; margin-bottom: 20px; background-color: transparent; border-spacing: 0; border-collapse: collapse; box-sizing: border-box; display: table;border-collapse: separate; border-spacing: 2px; border-color: grey; font-size: 14px; line-height: 1.42857143;">
+
+
+        <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
+
+            <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="DriverNameID">
+                            <select class="form-control" asp-for="DriverNameID" asp-items="Model.DriverNames"></select>
+                            <span asp-validation-for="DriverNameID"></span>
+                        </label>
+
+                    </div>
+
+                    <input type="submit" class="hidden-xs btn btn-success" value=" +   Select Driver" />
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</form>
+
+
+
+
+

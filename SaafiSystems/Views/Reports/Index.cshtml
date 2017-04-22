@@ -1,21 +1,112 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PaginatedList<SaafiSystems.Models.Load>
+
+@using PagedList.Core;
+
 @{
+    ViewBag.Title = "Loads";
 }
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+            Search Loads:
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+  
+
 
 <div style="border-bottom: 3px solid #e8e8e8; padding-bottom: 9px;
     margin: 40px 0 20px; display: block; color: #595952; font-size: 34px;
     line-height: 1.42857143; box-sizing: border-box;">
     All Reports
 </div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Reference</th>
+
+            <th>Description</th>
+          
+            <th> <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Owner</a> @Html.ActionLink("Owner", "Index", new { sortOrder = ViewBag.OwnerSortParm })</th>
+
+            <th>Amount</th>
+            <th><a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Category</a>  @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.CategorySortParm })</th>
+            <th class="pull-right">Action</th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var load in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => load.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => load.Reference)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => load.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => load.Owner)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => load.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => load.LoadCategory)
+                </td>
+                <td> </td>
+                <td></td>
+
+                <td>
+                    <input type="checkbox" name="loadIds" id="@load.ID" value="@load.ID" class="btn btn-danger btn-sm" />
+                    <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+                </td>
+                <td>
+                    <input type="checkbox" name="loadIds" id="@load.ID" value="@load.ID" class="btn btn-danger btn-sm" />
+                    <input type="submit" value="Edit" class="btn btn-info btn-sm" />
+                </td>
+</tr>
+        }
+
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled btn">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled btn">
+    Next
+</a>
+</br>
+
 <strong style=" color: #0090df;color: #337ab7; text-decoration: none;background-color: transparent; box-sizing: border-box; color: -webkit-link;  cursor: auto; font-weight: bold;    font-weight: bold; font-size: 18px; line-height: 2;     box-sizing: border-box;">
 
 
     <a>
         Profit and Loss
     </a><br />
-    <a>
+    <a asp-controller="Reports" asp-action="expense">
         Expense Report
     </a><br />
     <a>

@@ -10,7 +10,7 @@ namespace SaafiSystems.ViewModels
 {
     public class AddDriverLoadViewModel
     {
-        private Driver driver;
+        
 
         [Required(ErrorMessage = "Please enter valid date")]
         [Display]
@@ -64,9 +64,5 @@ namespace SaafiSystems.ViewModels
 
         }
 
-        public AddDriverLoadViewModel(Driver driver)
-        {
-            this.driver = driver;
-        }
     }
 }

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<SaafiSystems.Models.MonthlyRevenueViewModel.MonthlyRevenue>
+
+@{
+    ViewData["Title"] = "Total Trips By Month";
+}
+
+<h2>Total Trips By Month"</h2>
+
+<table>
+    <tr>
+        <th>
+            Trip Date
+        </th>
+        <th>
+            Trips
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @item.RevenueTotal
+            </td>
+        </tr>
+    }
+</table>

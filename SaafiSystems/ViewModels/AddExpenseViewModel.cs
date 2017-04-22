@@ -22,15 +22,15 @@ namespace SaafiSystems.ViewModels
 
 
         [Required]
-        [Display]
+        [Display(Name= "Owner Operator")]
         public string Owner { get; set; }
 
         [Required(ErrorMessage = "You must give your Expense a description")]
         public string Description { get; set; }
 
 
-        [Required]
-        [Display]
+        [Required(ErrorMessage = "You must give an expense amount")]
+       
         public int Amount { get; set; }
 
         [Required(ErrorMessage = "Provide Expense Category")]

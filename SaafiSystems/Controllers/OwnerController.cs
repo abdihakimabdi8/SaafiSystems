@@ -123,6 +123,82 @@ namespace SaafiSystems.Controllers
             }
             return View(addOwnerItemViewModel);
         }
+        
+        public IActionResult ViewOwnerExpense()
+        {
+            IList<Owner> owners = context.Owners.ToList();
+            ViewOwnerExpenseViewModel viewOwnerViewModel = new ViewOwnerExpenseViewModel(context.Owners.ToList());
+
+            return View(viewOwnerViewModel);
+
+        }
+
+
+        [HttpPost]
+        public IActionResult ViewOwnerExpense(ViewOwnerExpenseViewModel viewOwnerExpenseViewModel)
+        {
+            if(ModelState.IsValid)
+            {
+            
+            return Redirect(string.Format("/Owner/OwnerExpenseItems/{0}", viewOwnerExpenseViewModel.OwnerID));
+        }
+
+            return View(viewOwnerExpenseViewModel);
+        }
+
+        public IActionResult OwnerExpenseItems(int id)
+        {
+           
+            List<OwnerExpense> expenseItems = context.
+                OwnerExpenses.
+                Include(item => item.Expense).
+                Where(ol => ol.ExpenseID == id).
+                ToList();
+            Owner owner = context.Owners.Single(c => c.ID == id);
+            OwnerExpenseItemViewModel ownerExpenseItem = new OwnerExpenseItemViewModel
+            {
+                Owner = owner,
+                ExpenseItems = expenseItems
+            };
+
+            return View(ownerExpenseItem);
+        }
+
+        public IActionResult AddExpenseItem(int id)
+        {
+            List<Expense> expenses = context.Expenses.ToList();
+            Owner owner = context.Owners.Single(o => o.ID == id);
+
+            return View(new AddOwnerExpenseItemViewModel(owner, expenses));
+
+        }
+        [HttpPost]
+        public IActionResult AddExpenseItem(AddOwnerExpenseItemViewModel addOwnerExpenseItemViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                var exenseID = addOwnerExpenseItemViewModel.ExpenseID;
+                var ownerID = addOwnerExpenseItemViewModel.OwnerID;
+                IList<OwnerExpense> existingItems = context.OwnerExpenses
+                    .Where(ol => ol.ExpenseID == exenseID)
+                    .Where(ol => ol.OwnerID == ownerID).ToList();
+                if (existingItems.Count == 0)
+                {
+
+                    OwnerExpense ownerExpenseItem = new OwnerExpense
+                    {
+                        Expense = context.Expenses.Single(o => o.ID == exenseID),
+                        Owner = context.Owners.Single(ol => ol.ID == ownerID)
+                    };
+                    context.OwnerExpenses.Add(ownerExpenseItem);
+                    context.SaveChanges();
+                }
+                return Redirect(string.Format("/Owner/OwnerExpenseItems/{0}", addOwnerExpenseItemViewModel.Owner));
+            }
+            return View(addOwnerExpenseItemViewModel);
+        }
+
     }
 }
 

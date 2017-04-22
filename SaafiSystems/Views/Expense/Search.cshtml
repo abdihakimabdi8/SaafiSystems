@@ -1,0 +1,57 @@
+﻿@model List<SaafiSystems.Models.Expense>
+
+<h1>@ViewBag.Title</h1>
+<div class="page-header" style="background:white">
+    <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
+        Expense Entries
+        @using (Html.BeginForm("Search", "Expense", FormMethod.Get))
+        {
+            <p>
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as
+ string)
+                <input type="submit" value="Search" />
+            </p>
+        }
+        <a asp-controller="ExpenseCategory" asp-action="Add" class="hidden-xs btn btn-primary pull-right">+ Add Expense Category</a> <a asp-controller="Driver" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ Add Expense Category</a>
+        <a asp-controller="Expense" asp-action="Add" class="hidden-xs btn btn-success pull-right">+ New Expense Entry</a> <a asp-controller="Driver" asp-action="Add" class="visible-xs-block mobile-add btn-block btn btn-success">+ New Expense Entry</a>
+    </h1>
+</div>
+
+@if (Model.Count == 0)
+{
+    <p>No expense entries yet!</p>
+}
+
+<table class="table table-striped">
+
+    <tr>
+        <th>Date</th>
+        <th>Reference</th>
+        <th>Owner</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th></th>
+    </tr>
+
+    @foreach (var expense in Model)
+    {
+        <tr>
+            <td>@expense.Date</td>
+            <td>@expense.Reference</td>
+            <td>@expense.Owner</td>
+            <td>@expense.Description</td>
+            <td>@expense.ExpenseCategory.Name</td>
+            <td>
+                <input type="checkbox" name="expenseIds" id="@expense.ID" value="@expense.ID" class="btn btn-danger btn-sm" />
+                <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+            </td>
+            <td>
+                <input type="checkbox" name="expenseIds" id="@expense.ID" value="@expense.ID" class="btn btn-danger btn-sm" />
+                <input type="submit" value="Edit" class="btn btn-info btn-sm" />
+            </td>
+        </tr>
+    }
+</table>
+
+<p><a asp-controller="Expense" asp-action="Add" class="btn btn-info btn-sm ">Add Expense</a></p>
