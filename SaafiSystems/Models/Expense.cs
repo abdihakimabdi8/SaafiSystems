@@ -8,6 +8,7 @@ namespace SaafiSystems.Models
 {
     public class Expense
     {
+  
         public int ID {get; set;}
 
         [DataType(DataType.Date)]
@@ -19,7 +20,8 @@ namespace SaafiSystems.Models
         public string Description { get; set; }
         public int Amount { get; set; }
 
-        [Key]
+        [Required(ErrorMessage =("Select a Catgory or Add a new one!"))]
+        
         public int ExpenseCategoryID { get; set; }
         public ExpenseCategory ExpenseCategory { get; set; }
 

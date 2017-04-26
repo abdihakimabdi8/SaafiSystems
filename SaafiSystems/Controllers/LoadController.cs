@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+using PagedList.Core;
+
+using System.ComponentModel.DataAnnotations;
 namespace SaafiSystems.Controllers
 {
     public class LoadController : Controller
@@ -20,21 +23,24 @@ namespace SaafiSystems.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task< IActionResult> Index(int? page)
         {
-            IList<Load> loads = context.Loads.Include(c => c.LoadCategory).Include(c => c.OwnerLoads).ToList();
-
-            return View(loads);
+            
+            var loads = from l in context.Loads.Include(c => c.LoadCategory).Include(c => c.OwnerLoads)
+            select l;
+            int pageSize = 3;
+            return View(await PaginatedList<Load>.CreateAsync(loads.AsNoTracking(), page ?? 1, pageSize));
         }
 
         public IActionResult Add()
         {
             IList<LoadCategory> loadCategories = context.LoadCategories.ToList();
-            IList<RevenueCategory> revenueCategories = context.RevenueCategories.ToList();
+
             AddLoadViewModel addLoadViewModel =
-                new AddLoadViewModel(context.LoadCategories.ToList());
+                new AddLoadViewModel(context.LoadCategories.ToList(), null);
             return View(addLoadViewModel);
         }
+
 
         [HttpPost]
         public IActionResult Add(AddLoadViewModel addLoadViewModel)
@@ -43,18 +49,20 @@ namespace SaafiSystems.Controllers
             {
                 LoadCategory newLoadCategory =
                     context.LoadCategories.Single(c => c.ID == addLoadViewModel.LoadCategoryID);
-                
-                Load newLoad= new Load
+
+                Load newLoad = new Load
                 {
-            
+
                     Date = addLoadViewModel.Date,
                     Reference = addLoadViewModel.Reference,
                     Description = addLoadViewModel.Description,
                     Owner = addLoadViewModel.Owner,
                     Amount = addLoadViewModel.Amount,
                     LoadCategory = newLoadCategory,
-                    
+
                 };
+
+
 
                 context.Loads.Add(newLoad);
                 context.SaveChanges();
@@ -65,13 +73,18 @@ namespace SaafiSystems.Controllers
             return View(addLoadViewModel);
         }
 
-        public IActionResult Remove()
+        public IActionResult Remove(int ID)
         {
-            ViewBag.title = "Remove Load(s)";
-            ViewBag.expenses = context.Loads.ToList();
-            return View();
-        }
+            var ld = context.Loads.Single(e => e.ID == ID);
+            if (ld != null)
+                context.Loads.Remove(ld);
 
+            context.SaveChanges();
+
+            return Redirect("/Load");
+
+
+        }
         [HttpPost]
         public IActionResult Remove(int[] loadIds)
         {
@@ -116,82 +129,49 @@ namespace SaafiSystems.Controllers
             return View("Index", theCategory.Loads);
         }
 
-
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    AddLoadViewModel addLoadViewModel =
-        //        new AddLoadViewModel(context.LoadCategories.ToList());
-        //    IList<LoadCategory> loadCategories = context.LoadCategories.ToList();
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var loads = await context.Loads
-        //        .AsNoTracking()
-        //        .SingleOrDefaultAsync(m => m.ID == id);
-        //    if (loads == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    LoadCategory newLoadCategory =
-        //            context.LoadCategories.Single(c => c.ID == addLoadViewModel.LoadCategoryID);
-        //    return View(loads);
-        //} 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var load = context.Loads.SingleOrDefault((l) => l.ID == id);
+            if (load == null)
+            {
+                return NotFound();
+            }
+            List<LoadCategory> newLoadCategory =
+                    new List<LoadCategory>() { context.LoadCategories.Single(c => c.ID == load.LoadCategoryID) };
+            return View(new AddLoadViewModel(newLoadCategory, load));
+        }
 
 
-        //[HttpPost, ActionName("Edit")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> EditPost(int? id)
-        //{
-        //    AddLoadViewModel addLoadViewModel =
-        //        new AddLoadViewModel(context.LoadCategories.ToList());
-        //    Load newLoad = new Load
-        //    {
+        [HttpPost]
+        public async Task<IActionResult> Edit(AddLoadViewModel addLoadViewModel)
+        {
+            var load = context.Loads.SingleOrDefault((l) => l.ID == addLoadViewModel.ID);
 
-        //        Date = addLoadViewModel.Date,
-        //        Reference = addLoadViewModel.Reference,
-        //        Description = addLoadViewModel.Description,
-        //        Owner = addLoadViewModel.Owner,
-        //        Amount = addLoadViewModel.Amount,
-        //        LoadCategory = newLoadCategory,
+            if (load == null)
+            {
+                return NotFound();
+            }
+            var newLoadCategories = context.LoadCategories;
 
-        //    };
+            var viewModel = new AddLoadViewModel(newLoadCategories, load);
 
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var existingLoadCateogry = context.LoadCategories.SingleOrDefault(c => c.ID == load.LoadCategoryID);
 
-        //    var loadToUpdate = await context.Loads
-        //        .SingleOrDefaultAsync(c => c.ID == id);
+            if (existingLoadCateogry != null)
+            {
+                viewModel.LoadCategory = existingLoadCateogry;
+                viewModel.LoadCategoryID = existingLoadCateogry.ID;
 
-        //    if (await TryUpdateModelAsync<Load>(loadToUpdate,
-        //        "",
-        //        c => c.Date, c => c.Load, c => c.Title))
-        //    {
-        //        try
-        //        {
-        //            await context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateException /* ex */)
-        //        {
-        //            //Log the error (uncomment ex variable name and write a log.)
-        //            ModelState.AddModelError("", "Unable to save changes. " +
-        //                "Try again, and if the problem persists, " +
-        //                "see your system administrator.");
-        //        }
-        //        return RedirectToAction("Index");
-        //    }
-        //    PopulateLoadCategoryDropDownList(loadToUpdate.LoadCategoryID);
-        //    return View(loadToUpdate);
-        //}
-        //private void PopulateLoadCategoryDropDownList(object selectedCategory = null)
-        //{
-        //    var loadCategoryQuery = from d in context.LoadCategories
-        //                           orderby d.Name
-        //                           select d;
-        //    ViewBag.DepartmentID = new SelectList(loadCategoryQuery.AsNoTracking(), "LoadCategoryID", "Name", selectedCategory);
-        //}
-    }
+            }
+            
+            {
+                await context.SaveChangesAsync();
+                Redirect("/Load");
+
+
+            }
+            return View(viewModel);
+
+        }
+    }                
 }

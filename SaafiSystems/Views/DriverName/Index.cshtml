@@ -1,4 +1,5 @@
-﻿@model List<SaafiSystems.Models.DriverName>
+﻿@model PaginatedList<SaafiSystems.Models.DriverName>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <div class="page-header" style="background:white">
     <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
    Drivers  
@@ -38,12 +39,13 @@
                 <td><a asp-controller="Driver" asp-action="DriverTrips" asp-route-id="@driver.ID">@driver.ID</a></td>
                 <td><a asp-controller="Driver" asp-action="DriverTrips" asp-route-id="@driver.ID">@driver.Name</a></td>
                 <td>
-                    <input type="checkbox" name="driverIds" id="@driver.ID" value="@driver.ID" class="btn btn-danger btn-sm" />
-                    <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+                 <a href="/drivername/edit/@driver.ID" class="btn btn-info btn-xs">Edit</a>
+                    @*@*<input type="checkbox" name="expenseIds" id="@expense.ID" value="@expense.ID" class="btn btn-danger btn-sm" />*@
+                    @*<input type="submit" value="Delete" class="btn btn-info btn-sm" />*@
                 </td>
                 <td>
-                    <input type="checkbox" name="driverIds" id="@driver.ID" value="@driver.ID" class="btn btn-danger btn-sm" />
-                    <input type="submit" value="Edit" class="btn btn-info btn-sm" />
+                    <a href="/drivername/remove/@driver.ID" class="btn btn-danger btn-xs">Delete</a>
+                    @*<input type="submit" value="Edit" class="btn btn-info btn-sm" />*@
                 </td>
            
             </tr>
@@ -53,4 +55,29 @@
     </table>
 
 </form>
+<a asp-controller="DriverName" asp-action="Add" class="hidden-xs btn btn-success btn-sm">+ Add Driver</a>
+<a asp-controller="Driver" asp-action="Add" class="hidden-xs btn btn-info btn-sm pull-right">+ Payroll Entry</a>
 
+
+</br>
+</br>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled btn">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled btn">
+    Next
+</a>
+</br>

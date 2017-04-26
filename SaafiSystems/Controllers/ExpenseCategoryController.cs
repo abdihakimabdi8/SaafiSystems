@@ -5,8 +5,7 @@ using SaafiSystems.ViewModels;
 using SaafiSystems.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-
-
+using System.Threading.Tasks;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SaafiSystems.Controllers
@@ -21,11 +20,13 @@ namespace SaafiSystems.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            IEnumerable<ExpenseCategory> expenseCategories = context.ExpenseCategories.ToList();
+            var expenseCategories = from eCat in context.ExpenseCategories
+                                    select eCat;
+            int pageSize = 3;
+            return View(await PaginatedList<ExpenseCategory>.CreateAsync(expenseCategories.AsNoTracking(), page ?? 1, pageSize));
 
-            return View(expenseCategories);
         }
 
         public IActionResult Add()
@@ -54,11 +55,18 @@ namespace SaafiSystems.Controllers
             return View(addExpenseCategoryViewModel);
         }
 
-        public IActionResult Remove()
+
+        public IActionResult Remove(int ID)
         {
-            ViewBag.title = "Remove Categories";
-            ViewBag.epenseCategories = context.ExpenseCategories.ToList();
-            return View();
+            var expenseCat = context.ExpenseCategories.Single(e => e.ID == ID);
+            if (expenseCat != null)
+                context.ExpenseCategories.Remove(expenseCat);
+
+            context.SaveChanges();
+
+            return Redirect("/ExpenseCategory");
+
+
         }
 
         [HttpPost]

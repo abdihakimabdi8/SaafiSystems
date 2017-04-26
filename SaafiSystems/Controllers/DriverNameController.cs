@@ -5,6 +5,7 @@ using SaafiSystems.ViewModels;
 using SaafiSystems.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,12 +22,16 @@ namespace SaafiSystems.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            IEnumerable<DriverName> driverName = context.DriverNames.ToList();
+            var driverName = from dn in context.DriverNames
+                                    select dn;
+            int pageSize = 3;
+            return View(await PaginatedList<DriverName>.CreateAsync(driverName.AsNoTracking(), page ?? 1, pageSize));
 
-            return View(driverName);
         }
+       
+        
 
         public IActionResult Add()
         {
@@ -53,11 +58,16 @@ namespace SaafiSystems.Controllers
 
             return View(addDriverNameViewModel);
         }
-        public IActionResult Remove()
+        public IActionResult Remove(int ID)
         {
-            ViewBag.title = "Remove Drivers";
-            ViewBag.drivers = context.DriverNames.ToList();
-            return View();
+            var drivername = context.DriverNames.Single(e => e.ID == ID);
+            if (drivername != null)
+                context.DriverNames.Remove(drivername);
+
+            context.SaveChanges();
+
+            return Redirect("/DriverName");
+
         }
 
         [HttpPost]

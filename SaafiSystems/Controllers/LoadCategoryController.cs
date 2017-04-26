@@ -5,6 +5,7 @@ using SaafiSystems.ViewModels;
 using SaafiSystems.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,14 +20,15 @@ namespace SaafiSystems.Controllers
         {
             this.context = dbContext;
         }
-
-        // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            IEnumerable<LoadCategory> loadCategories = context.LoadCategories.ToList();
+            var loadCategories = from lCat in context.LoadCategories
+                                    select lCat;
+            int pageSize = 3;
+            return View(await PaginatedList<LoadCategory>.CreateAsync(loadCategories.AsNoTracking(), page ?? 1, pageSize));
 
-            return View(loadCategories);
         }
+       
 
         public IActionResult Add()
         {
@@ -56,11 +58,17 @@ namespace SaafiSystems.Controllers
 
             return View(addLoadCategoryViewModel);
         }
-        public IActionResult Remove()
+        public IActionResult Remove(int ID)
         {
-            ViewBag.title = "Remove Categories";
-            ViewBag.loadCategories = context.LoadCategories.ToList();
-            return View();
+            var loadCat = context.LoadCategories.Single(e => e.ID == ID);
+            if (loadCat != null)
+                context.LoadCategories.Remove(loadCat);
+
+            context.SaveChanges();
+
+            return Redirect("/LoadCategory");
+
+
         }
 
         [HttpPost]

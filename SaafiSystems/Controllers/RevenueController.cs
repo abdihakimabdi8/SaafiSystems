@@ -5,6 +5,7 @@ using SaafiSystems.ViewModels;
 using SaafiSystems.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace SaafiSystems.Controllers
 {
@@ -16,19 +17,21 @@ namespace SaafiSystems.Controllers
         {
             this.context = dbContext;
         }
-
-        // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            IList<Revenue> revenues = context.Revenues.Include(c => c.RevenueCategory).ToList();
 
-            return View(revenues);
+            var revenues = from r in context.Revenues.Include(c => c.RevenueCategory)
+                        select r;
+            int pageSize = 3;
+            return View(await PaginatedList<Revenue>.CreateAsync(revenues.AsNoTracking(), page ?? 1, pageSize));
         }
+        // GET: /<controller>/
+        
 
         public IActionResult Add()
         {
             AddRevenueViewModel addRevenueViewModel =
-                new AddRevenueViewModel(context.RevenueCategories.ToList());
+                new AddRevenueViewModel(context.RevenueCategories.ToList(), null);
             return View(addRevenueViewModel);
         }
 
@@ -59,11 +62,17 @@ namespace SaafiSystems.Controllers
             return View(addRevenueViewModel);
         }
 
-        public IActionResult Remove()
+        public IActionResult Remove(int ID)
         {
-            ViewBag.title = "Remove Revenue";
-            ViewBag.cheeses = context.Revenues.ToList();
-            return View();
+            var rev = context.Revenues.Single(e => e.ID == ID);
+            if (rev != null)
+                context.Revenues.Remove(rev);
+
+            context.SaveChanges();
+
+            return Redirect("/Revenue");
+
+
         }
 
         [HttpPost]
@@ -99,6 +108,42 @@ namespace SaafiSystems.Controllers
 
             ViewBag.Title = "cheeses in Category" + theCategory.Name;
             return View("Index", theCategory.Revenues);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var revenue = context.Revenues.SingleOrDefault((l) => l.ID == id);
+            if (revenue == null)
+            {
+                return NotFound();
+            }
+            List<RevenueCategory> newRevenueCategory =
+                    new List<RevenueCategory>() { context.RevenueCategories.Single(c => c.ID == revenue.RevenueCategoryID) };
+            return View(new AddRevenueViewModel(newRevenueCategory, null));
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AddRevenueViewModel addRevenueViewModel)
+        {
+            var revenue = context.Revenues.SingleOrDefault((l) => l.ID == addRevenueViewModel.ID);
+            if (revenue == null)
+            {
+                return NotFound();
+            }
+            var newRevenueCategories = context.RevenueCategories;
+
+            var viewModel = new AddRevenueViewModel(newRevenueCategories, revenue);
+
+            var existingRevenueCategory = context.RevenueCategories.SingleOrDefault(c => c.ID == revenue.RevenueCategoryID);
+
+            if (existingRevenueCategory != null)
+            {
+                viewModel.RevenueCategory = existingRevenueCategory;
+                viewModel.RevenueCategoryID = existingRevenueCategory.ID;
+            }
+
+            return View(viewModel);
         }
 
     }

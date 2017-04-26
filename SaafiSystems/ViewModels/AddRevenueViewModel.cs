@@ -11,6 +11,7 @@ namespace SaafiSystems.ViewModels
     public class AddRevenueViewModel
     {
 
+        public int ID { get; set; }
         [Required]
         [Display]
         public DateTime Date { get; set; }
@@ -42,7 +43,7 @@ namespace SaafiSystems.ViewModels
         public List<SelectListItem> RevenueCategories { get; set; }
 
         public AddRevenueViewModel() { }
-        public AddRevenueViewModel(IEnumerable<RevenueCategory> revenueCategories)
+        public AddRevenueViewModel(IEnumerable<RevenueCategory> revenueCategories, Revenue revenue)
         {
 
             RevenueCategories = new List<SelectListItem>();

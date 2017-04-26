@@ -11,6 +11,7 @@ namespace SaafiSystems.ViewModels
     public class AddLoadViewModel
     {
 
+        public int ID { get; set; }
 
         [Required(ErrorMessage = "You must give your Load a date entry")]
         public DateTime Date { get; set; }
@@ -37,16 +38,29 @@ namespace SaafiSystems.ViewModels
 
         public LoadCategory LoadCategory { get; set; }
 
+        public int OwnerID { get; set; }
+      //  public Owner Owner { get; set; }
 
+        public List<SelectListItem> Owners { get; set; }
         public List<SelectListItem> LoadCategories { get; set; }
 
 
         public AddLoadViewModel() { }
-        public AddLoadViewModel(IEnumerable<LoadCategory> loadCategories)
+        public AddLoadViewModel(IEnumerable<LoadCategory> loadCategories, Load load)
         {
+            if (load != null)
+            {
+                this.ID = load.ID;
+                this.Description = load.Description;
+                this.Amount = load.Amount;
+                this.Reference = load.Reference;
+                this.Date = load.Date ?? DateTime.MinValue;
+                this.Owner = load.Owner;
+            }
+
 
             LoadCategories = new List<SelectListItem>();
-
+            Owners = new List<SelectListItem>();
             // <option value="0">Hard</option>
             foreach (LoadCategory category in loadCategories)
             {
@@ -55,10 +69,19 @@ namespace SaafiSystems.ViewModels
                     Value = ((int)category.ID).ToString(),
                     Text = category.Name.ToString()
                 });
-  
             }
+            //        foreach (Owner owner in owners)
+            //        {
+            //            Owners.Add(new SelectListItem
+            //            {
+            //                Value = ((int)owner.ID).ToString(),
+            //                Text = owner.Name.ToString()
+            //            });
+            //        }
+
+            //}
 
         }
-        
+
     }
- }
+}

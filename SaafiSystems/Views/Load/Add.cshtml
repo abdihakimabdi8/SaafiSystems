@@ -10,7 +10,7 @@
 </div>
 
 <form asp-controller="Load" asp-action="Add" method="post">
-    <table class="table table-striped " style="width: 100%; max-width: 100%; margin-bottom: 20px; background-color: transparent; border-spacing: 0; border-collapse: collapse; box-sizing: border-box; display: table;border-collapse: separate; border-spacing: 2px; border-color: grey; font-size: 14px; line-height: 1.42857143;">
+    <table class="table table-striped " style="width: 100%; max-width: 100%; margin-bottom: 20px; background-color: transparent; border-spacing: 0; border-collapse: collapse; box-sizing: border-box; display: table;border-collapse: separate; border-spacing: 2px; border-color: grey; font-size: 14px; line-height: 1.42857143; text-align:center">
 
 
         <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
@@ -48,14 +48,17 @@
 
                 </td>
                 <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
-                    <div class="form-group">
-                        <label asp-for="LoadCategoryID"></label>
-                        <select class= "form-control" asp-for="LoadCategoryID" asp-items="Model.LoadCategories"></select>
-                      
+                    <div class="form-group" style="text-align:center">
+                        <label asp-for="LoadCategoryID" ></label>
+                        <div class="col-md-10">
+                            <select asp-for="LoadCategoryID" class="form-control" asp-items= "Model.LoadCategories">
+                                <option value="">-- Select Category --</option>
+                            </select>
+                            <span asp-validation-for="LoadCategoryID" class="text-danger" />
+                        </div>
                     </div>
-
-
                 </td>
+
                 
                 <td><label style="color:azure">S</label><input type="submit" class="hidden-xs btn btn-success" value=" + Submit Entry" /></td>
             </tr>

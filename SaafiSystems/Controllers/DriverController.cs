@@ -6,6 +6,7 @@ using SaafiSystems.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace SaafiSystems.Controllers
 {
@@ -21,18 +22,21 @@ namespace SaafiSystems.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            IList<Driver> drivers = context.Drivers.Include(c => c.DriverName).ToList();
-
-            return View(drivers);
+            
+            var drivers = from d in context.Drivers.Include(c => c.DriverName)
+                        select d;
+            int pageSize = 3;
+            return View(await PaginatedList<Driver>.CreateAsync(drivers.AsNoTracking(), page ?? 1, pageSize));
+            
         }
 
         public IActionResult Add()
         {
             IList<DriverName> driverNames = context.DriverNames.ToList();
             AddDriverLoadViewModel addDriverLoadViewModel =
-                new AddDriverLoadViewModel(context.DriverNames.ToList());
+                new AddDriverLoadViewModel(context.DriverNames.ToList(), null);
             return View(addDriverLoadViewModel);
         }
 
@@ -66,13 +70,19 @@ namespace SaafiSystems.Controllers
             return View(addDriverLoadViewModel);
         }
 
-        public IActionResult Remove()
+      
+        public IActionResult Remove(int ID)
         {
-            ViewBag.title = "Remove Driver Entries";
-            ViewBag.drivers = context.Drivers.ToList();
-            return View();
-        }
+            var dri = context.Drivers.Single(e => e.ID == ID);
+            if (dri != null)
+                context.Drivers.Remove(dri);
 
+            context.SaveChanges();
+
+            return Redirect("/Driver");
+
+
+        }
         [HttpPost]
         public IActionResult Remove(int[] driverIds)
         {
@@ -141,6 +151,41 @@ namespace SaafiSystems.Controllers
             };
             ViewBag.title = driverName.Name;
             return View(driverLoads);
+        }
+        public async Task<IActionResult> Edit(int id)
+        {
+            var driver = context.Drivers.SingleOrDefault((l) => l.ID == id);
+            if (driver == null)
+            {
+                return NotFound();
+            }
+            List<DriverName> newDriverName =
+                    new List<DriverName>() { context.DriverNames.Single(c => c.ID == driver.DriverNameID) };
+            return View(new AddDriverLoadViewModel(newDriverName, driver));
+        }
+
+        
+        [HttpPost]
+        public async Task<IActionResult> Edit(AddDriverLoadViewModel addDriverLoadViewModel)
+        {
+            var driver = context.Drivers.SingleOrDefault((l) => l.ID == addDriverLoadViewModel.ID);
+            if (driver == null)
+            {
+                return NotFound();
+            }
+            var newDriverNames = context.DriverNames;
+
+            var viewModel = new AddDriverLoadViewModel(newDriverNames, driver);
+
+            var existingDriverName = context.DriverNames.SingleOrDefault(c => c.ID == driver.DriverNameID);
+
+            if (existingDriverName != null)
+            {
+                viewModel.DriverName = existingDriverName;
+                viewModel.DriverNameID = existingDriverName.ID;
+            }
+
+            return View(viewModel);
         }
     }
 }

@@ -41,12 +41,13 @@
                 <td>@item.Expense.Amount</td>
 
                 <td>
-                    <input type="checkbox" name="expenseIds" id="@item.Expense.ID" value="@item.Expense.ID" class="btn btn-danger btn-sm" />
-                    <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+                    <a href="/expense/edit/@item.Expense.ID" class="btn btn-info btn-xs">Edit</a>
+                    @*@*<input type="checkbox" name="expenseIds" id="@expense.ID" value="@expense.ID" class="btn btn-danger btn-sm" />*@
+                    @*<input type="submit" value="Delete" class="btn btn-info btn-sm" />*@
                 </td>
                 <td>
-                    <input type="checkbox" name="expenseIds" id="@item.Expense.ID" value="@item.Expense.ID" class="btn btn-danger btn-sm" />
-                    <input type="submit" value="Edit" class="btn btn-info btn-sm" />
+                    <a href="/expense/remove/@item.Expense.ID" class="btn btn-danger btn-xs">Delete</a>
+                    @*<input type="submit" value="Edit" class="btn btn-info btn-sm" />*@
                 </td>
             </tr>
         }
@@ -58,3 +59,23 @@
 
 <a asp-controller="Expense" asp-action="Add" class="btn btn-success btn-sm">Add Expense Item</a>
 <a asp-controller="Owner" class="pull-right"> <span class="btn btn-info btn-sm">Owner Operators</span> </a>
+@*@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled btn">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled btn">
+    Next
+</a>
+</br>*@

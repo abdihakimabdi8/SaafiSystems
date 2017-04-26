@@ -6,6 +6,7 @@ using SaafiSystems.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace SaafiSystems.Controllers
 {
@@ -19,18 +20,21 @@ namespace SaafiSystems.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task< IActionResult> Index(int? page)
         {
-            IList<Expense> expenses = context.Expenses.Include(c => c.ExpenseCategory).Include(c => c.Owner).ToList();
-
-            return View(expenses);
+            //.Include(c => c.Owner).ToList();
+            var expenses = from e in context.Expenses.Include(c => c.ExpenseCategory)
+                          select e;
+            int pageSize = 3;
+            return View(await PaginatedList<Expense>.CreateAsync(expenses.AsNoTracking(), page ?? 1, pageSize));
+           
         }
 
         public IActionResult Add()
         {
             IList<ExpenseCategory> expenseCategories = context.ExpenseCategories.ToList();
             AddExpenseViewModel addExpenseViewModel =
-                new AddExpenseViewModel(context.ExpenseCategories.ToList());
+                new AddExpenseViewModel(context.ExpenseCategories.ToList(), null);
             return View(addExpenseViewModel);
         }
 
@@ -52,6 +56,8 @@ namespace SaafiSystems.Controllers
                     Description = addExpenseViewModel.Description,
                     Amount = addExpenseViewModel.Amount,
                     ExpenseCategory = newCategory
+                  
+                    
                 };
 
                 context.Expenses.Add(newExpense);
@@ -63,11 +69,17 @@ namespace SaafiSystems.Controllers
             return View(addExpenseViewModel);
         }
 
-        public IActionResult Remove()
+        public IActionResult Remove(int ID)
         {
-            ViewBag.title = "Remove Expenses";
-            ViewBag.expenses = context.Expenses.ToList();
-            return View();
+            var exp = context.Expenses.Single(e => e.ID == ID);
+            if (exp != null)
+                context.Expenses.Remove(exp);
+
+            context.SaveChanges();
+
+            return Redirect("/Expense");
+
+       
         }
 
         [HttpPost]
@@ -129,6 +141,42 @@ namespace SaafiSystems.Controllers
             }
             
             return View(expenses);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var expense = context.Expenses.SingleOrDefault((l) => l.ID == id);
+            if (expense == null)
+            {
+                return NotFound();
+            }
+            List<ExpenseCategory> newExpenseCategory =
+                    new List<ExpenseCategory>() { context.ExpenseCategories.Single(c => c.ID == expense.ExpenseCategoryID) };
+            return View(new AddExpenseViewModel(newExpenseCategory, expense));
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AddExpenseViewModel addExpenseViewModel)
+        {
+            var expense = context.Expenses.SingleOrDefault((l) => l.ID == addExpenseViewModel.ID);
+            if (expense == null)
+            {
+                return NotFound();
+            }
+            var newExpenseCategories = context.ExpenseCategories;
+
+            var viewModel = new AddExpenseViewModel(newExpenseCategories, expense);
+
+            var existingExpenseCategory = context.ExpenseCategories.SingleOrDefault(c => c.ID == expense.ExpenseCategoryID);
+
+            if (existingExpenseCategory != null)
+            {
+                viewModel.ExpenseCategory = existingExpenseCategory;
+                viewModel.ExpenseCategoryID = existingExpenseCategory.ID;
+            }
+
+            return View(viewModel);
         }
     }
 }

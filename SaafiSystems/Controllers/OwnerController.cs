@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SaafiSystems.Models;
 using SaafiSystems.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,10 +21,14 @@ namespace SaafiSystems.Controllers
             context = dbContext;
         }
         // GET: /<controller>/
-        public IActionResult Index()
+      
+        public async Task<IActionResult> Index(int? page)
         {
-            List<Owner> owners = context.Owners.ToList();
-            return View(owners);
+            var owners = from o in context.Owners
+                                    select o;
+            int pageSize = 3;
+            return View(await PaginatedList<Owner>.CreateAsync(owners.AsNoTracking(), page ?? 1, pageSize));
+
         }
         public IActionResult Add()
         {
@@ -198,7 +203,47 @@ namespace SaafiSystems.Controllers
             }
             return View(addOwnerExpenseItemViewModel);
         }
+        public IActionResult Remove(int ID)
+        {
+            var o = context.Owners.Single(e => e.ID == ID);
+            if (o != null)
+                context.Owners.Remove(o);
 
+            context.SaveChanges();
+
+            return Redirect("/Owner");
+
+
+        }
+       
+        public async Task<IActionResult> Edit(int id)
+        {
+            var owner = context.Owners.SingleOrDefault((l) => l.ID == id);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+           
+            return View(new AddOwnerViewModel());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AddOwnerViewModel addOwnerViewModel)
+        {
+            var owner = context.Owners.SingleOrDefault((l) => l.ID == addOwnerViewModel.ID);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+            
+
+            var viewModel = new AddOwnerViewModel(owner);
+
+            
+
+            return View(viewModel);
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 ﻿@model SaafiSystems.ViewModels.ViewOwnerViewModel
-
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <div class="page-header" style="background:white">
     <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
       
@@ -37,7 +37,26 @@
 
 </form>
 
+@*@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled btn">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled btn">
+    Next
+</a>
+</br>*@
 
 
 

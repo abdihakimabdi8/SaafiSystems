@@ -11,6 +11,7 @@ namespace SaafiSystems.ViewModels
     public class AddExpenseViewModel
     {
       
+        public int ID { get; set; }
 
         [Required]
         [Display]
@@ -37,13 +38,13 @@ namespace SaafiSystems.ViewModels
         [Display(Name = "Category")]
         public int ExpenseCategoryID { get; set; }
 
-        public List<ExpenseCategory> ExpenseCategory { get; set; }
+        public ExpenseCategory ExpenseCategory { get; set; }
 
         public List<SelectListItem> ExpenseCategories { get; set; }
 
 
         public AddExpenseViewModel() { }
-        public AddExpenseViewModel(IEnumerable<ExpenseCategory> expenseCategories)
+        public AddExpenseViewModel(IEnumerable<ExpenseCategory> expenseCategories, Expense expense)
         {
 
             ExpenseCategories = new List<SelectListItem>();

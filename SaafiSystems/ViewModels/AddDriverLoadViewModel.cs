@@ -11,6 +11,7 @@ namespace SaafiSystems.ViewModels
     public class AddDriverLoadViewModel
     {
         
+        public int ID { get; set; }
 
         [Required(ErrorMessage = "Please enter valid date")]
         [Display]
@@ -29,6 +30,7 @@ namespace SaafiSystems.ViewModels
         [Display(Name = "Loaded Miles")]
 
         public int LoadMiles { get; set; }
+
         [Required(ErrorMessage = "Provide the number of Dead Miles")]
         [Display(Name = "Dead Miles")]
         public int DeadMiles { get; set; }
@@ -37,18 +39,36 @@ namespace SaafiSystems.ViewModels
         [Display]
         public int Rate { get; set; }
 
+       // public int TripPay { get; set; }
+
         [Required(ErrorMessage = "Provide Driver Name")]
         [Display(Name = "Driver Name")]
         public int DriverNameID { get; set; }
 
-        public List<DriverName> DriverName { get; set; }
+        public DriverName DriverName { get; set; }
 
         public List<SelectListItem> DriverNames { get; set; }
 
 
         public AddDriverLoadViewModel() { }
-        public AddDriverLoadViewModel(IEnumerable<DriverName> driverNames)
+        public AddDriverLoadViewModel(IEnumerable<DriverName> driverNames, Driver driver)
         {
+            if (driver != null)
+            {
+               
+                this.ID = driver.ID;
+                this.Reference = driver.Reference;
+               
+                this.DeadMiles = driver.DeadMiles;
+                this.LoadMiles = driver.LoadMiles;
+                this.Rate = driver.Rate;
+               // this.TripPay = driver.TripPay;
+                this.Description = driver.Description;
+             
+               
+                this.Date = driver.Date ?? DateTime.MinValue;
+              
+            }
 
             DriverNames = new List<SelectListItem>();
 

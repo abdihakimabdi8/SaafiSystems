@@ -11,5 +11,10 @@ namespace SaafiSystems.Models
         public string Name { get; set; }
 
         public IList<Driver> Drivers { get; set; }
+
+        public static implicit operator List<object>(DriverName v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,6 +1,7 @@
-﻿@model List<SaafiSystems.Models.Load>
+﻿@model PaginatedList<SaafiSystems.Models.Load>
 
 <h1>@ViewBag.Title</h1>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <div class="page-header" style="background:white">
     <h1 style=" font-size: 21px;color: #0b131d; font-weight: 400;font-size: 21px;margin-top: 20px;margin-bottom: 10px;font-family: inherit;font-weight: 400;line-height: 1.1;color: inherit;margin: .67em 0; font-size: 2em; box-sizing: border-box;display: block;font-size: 2em; font-weight: bold;">
         Trips Entries
@@ -22,7 +23,7 @@
 {
     <p>No load entries yet!</p>
 }
-<form asp-controller="Load" asp-action="Remove">
+
 
     <table class="table table-striped">
 
@@ -32,10 +33,12 @@
 
             <th>Description</th>
             <th>Owner</th>
+            <th>Amount</th>
             <th>Category</th>
+            <th></th>
             <th class="pull-right">Action</th>
             <th></th>
-            
+
         </tr>
 
         @foreach (var load in Model)
@@ -46,23 +49,33 @@
 
                 <td>@load.Description</td>
                 <td>@load.Owner</td>
-                <td>@load.LoadCategory.Name</td>
+                <td>@load.Amount</td>
                 <td>
-                    <input type="checkbox" name="loadIds" id="@load.ID" value="@load.ID" class="btn btn-danger btn-sm" />
-                    <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+                    <a asp-controller="Load"
+                       asp-action="Edit"
+                       asp-route-id="@load.ID"> @load.LoadCategory.Name</a>
                 </td>
+                <td></td>
                 <td>
-                    <input type="checkbox" name="loadIds" id="@load.ID" value="@load.ID" class="btn btn-danger btn-sm" />
-                    <input type="submit" value="Edit" class="btn btn-info btn-sm" />
+             
+                <a href="/load/edit/@load.ID" class="btn btn-info btn-xs">Edit</a>
+    @*@*<input type="checkbox" name="expenseIds" id="@expense.ID" value="@expense.ID" class="btn btn-danger btn-sm" />*@
+    @*<input type="submit" value="Delete" class="btn btn-info btn-sm" />*@
                 </td>
+            <td>
+                <a href="/load/remove/@load.ID" class="btn btn-danger btn-xs">Delete</a>
+                @*<input type="submit" value="Edit" class="btn btn-info btn-sm" />*@
+            </td>
             </tr>
         }
     </table>
 
-    <p><a asp-controller="Load" asp-action="Add" class="btn btn-info btn-sm">Add Trip</a></p>
+<a asp-controller="Load" asp-action="Add" class="btn btn-success btn-sm">+ Add Trip</a>
+<a asp-controller="LoadCategory" asp-action="Add" class="btn btn-info btn-sm pull-right">+ Add Category</a>
+<br />
+<br />
 
-</form>
-@*@{
+@{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
@@ -80,4 +93,4 @@
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @nextDisabled btn">
     Next
-</a>*@
+</a>

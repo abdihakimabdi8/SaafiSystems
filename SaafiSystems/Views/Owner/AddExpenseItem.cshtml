@@ -20,7 +20,7 @@
                 <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
                     <div class="form-group">
                         <label asp-for="ExpenseID">
-                            <select asp-for="ExpenseID" asp-items="@Model.Expenses"></select>
+                            <select class="form-control" asp-for="ExpenseID" asp-items="@Model.Expenses"></select>
                             <span asp-validation-for="ExpenseID"></span>
                         </label>
 

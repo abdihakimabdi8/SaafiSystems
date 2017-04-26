@@ -17,8 +17,7 @@ namespace SaafiSystems.Models
         public string Owner { get; set; }
         public string Description { get; set; }
         public int Amount { get; set; }
-
-        [Key]
+        
         public int RevenueCategoryID { get; set; }
         public RevenueCategory RevenueCategory { get; set; }
 
