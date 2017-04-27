@@ -53,28 +53,26 @@ namespace SaafiSystems.Controllers
             }
             return View(addOwnerViewModel);
         }
-
-        public IActionResult ViewOwner()
+        public async Task<IActionResult> ViewOwner(int id, int? page)
         {
-            IList<Owner> owners = context.Owners.ToList();
-            ViewOwnerViewModel viewOwnerViewModel = new ViewOwnerViewModel(context.Owners.ToList());
-
-            return View(viewOwnerViewModel);
-
-        }
-
-
-        [HttpPost]
-        public IActionResult ViewOwner(ViewOwnerViewModel viewOwnerViewModel)
-        {
-            if(ModelState.IsValid)
+            //TODO: #1 implement a paginatedList for ViewOwner Action
+            List<OwnerLoad> items = context
+                .OwnerLoads
+                .Include(item => item.Load)
+                .Where(cm => cm.OwnerID == id)
+                .ToList();
+            Owner owner = context.Owners.Single(m => m.ID == id);
+         
+            ViewOwnerViewModel viewModel = new ViewOwnerViewModel
             {
-            
-            return Redirect(string.Format("/Owner/OwnerItems/{0}", viewOwnerViewModel.OwnerID));
-        }
+                Owner = owner,
+                Items = items
 
-            return View(viewOwnerViewModel);
+            };
+            int pageSize = 3;
+            return View( (viewModel));
         }
+     
 
         public IActionResult OwnerItems(int id)
         {
@@ -96,8 +94,9 @@ namespace SaafiSystems.Controllers
 
         public IActionResult AddItem(int id)
         {
+           Owner owner = context.Owners.Single(o => o.ID == id);
             List<Load> loads = context.Loads.ToList();
-            Owner owner = context.Owners.Single(o => o.ID == id);
+            
 
             return View(new AddOwnerItemViewModel(owner, loads));
 
@@ -124,33 +123,42 @@ namespace SaafiSystems.Controllers
                     context.OwnerLoads.Add(ownerItem);
                     context.SaveChanges();
                 }
-                return Redirect(string.Format("/Owner/OwnerItems/{0}", addOwnerItemViewModel.Owner));
+                return Redirect(string.Format("/Owner/ViewOwner/{0}", addOwnerItemViewModel.OwnerID));
             }
             return View(addOwnerItemViewModel);
         }
-        
-        public IActionResult ViewOwnerExpense()
-        {
-            IList<Owner> owners = context.Owners.ToList();
-            ViewOwnerExpenseViewModel viewOwnerViewModel = new ViewOwnerExpenseViewModel(context.Owners.ToList());
 
-            return View(viewOwnerViewModel);
+        public async Task<IActionResult> Expense(int? page)
+        {
+            var owners = from o in context.Owners
+                         select o;
+            int pageSize = 3;
+            return View(await PaginatedList<Owner>.CreateAsync(owners.AsNoTracking(), page ?? 1, pageSize));
 
         }
 
-
-        [HttpPost]
-        public IActionResult ViewOwnerExpense(ViewOwnerExpenseViewModel viewOwnerExpenseViewModel)
+        public async Task<IActionResult> ViewOwnerExpense(int id, int? page)
         {
-            if(ModelState.IsValid)
+            //TODO: #2 implement a paginatedList for ViewOwnerExenpense Action
+            List<OwnerExpense> expenseItems = context.
+               OwnerExpenses.
+               Include(item => item.Expense).
+               Where(ol => ol.OwnerID == id).
+               ToList();
+            Owner owner = context.Owners.Single(c => c.ID == id);
+            ViewOwnerExpenseViewModel ownerExpenseItem = new ViewOwnerExpenseViewModel
             {
+                Owner = owner,
+                ExpenseItems = expenseItems
+            };
+
             
-            return Redirect(string.Format("/Owner/OwnerExpenseItems/{0}", viewOwnerExpenseViewModel.OwnerID));
+            int pageSize = 3;
+            return View(ownerExpenseItem);
         }
 
-            return View(viewOwnerExpenseViewModel);
-        }
-
+        
+        
         public IActionResult OwnerExpenseItems(int id)
         {
            
@@ -169,40 +177,52 @@ namespace SaafiSystems.Controllers
             return View(ownerExpenseItem);
         }
 
+
+    
+        
+        
         public IActionResult AddExpenseItem(int id)
         {
-            List<Expense> expenses = context.Expenses.ToList();
             Owner owner = context.Owners.Single(o => o.ID == id);
+            List<Expense> expenses = context.Expenses.ToList();
+          
 
             return View(new AddOwnerExpenseItemViewModel(owner, expenses));
 
         }
+
+   
         [HttpPost]
         public IActionResult AddExpenseItem(AddOwnerExpenseItemViewModel addOwnerExpenseItemViewModel)
         {
+            //TODO: Display Category Name along item rather than the just the ID
+
             if (ModelState.IsValid)
             {
                 
-                var exenseID = addOwnerExpenseItemViewModel.ExpenseID;
+                var expenseID = addOwnerExpenseItemViewModel.ExpenseID;
                 var ownerID = addOwnerExpenseItemViewModel.OwnerID;
                 IList<OwnerExpense> existingItems = context.OwnerExpenses
-                    .Where(ol => ol.ExpenseID == exenseID)
+                    .Where(ol => ol.ExpenseID == expenseID)
                     .Where(ol => ol.OwnerID == ownerID).ToList();
                 if (existingItems.Count == 0)
                 {
 
                     OwnerExpense ownerExpenseItem = new OwnerExpense
                     {
-                        Expense = context.Expenses.Single(o => o.ID == exenseID),
+                        Expense = context.Expenses.Single(o => o.ID == expenseID),
                         Owner = context.Owners.Single(ol => ol.ID == ownerID)
                     };
                     context.OwnerExpenses.Add(ownerExpenseItem);
                     context.SaveChanges();
                 }
-                return Redirect(string.Format("/Owner/OwnerExpenseItems/{0}", addOwnerExpenseItemViewModel.Owner));
+
+                return Redirect(string.Format("/Owner/ViewOwnerExpense/{0}", addOwnerExpenseItemViewModel.OwnerID));
             }
             return View(addOwnerExpenseItemViewModel);
         }
+
+
         public IActionResult Remove(int ID)
         {
             var o = context.Owners.Single(e => e.ID == ID);

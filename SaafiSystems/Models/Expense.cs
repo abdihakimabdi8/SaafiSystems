@@ -25,5 +25,6 @@ namespace SaafiSystems.Models
         public int ExpenseCategoryID { get; set; }
         public ExpenseCategory ExpenseCategory { get; set; }
 
+        public List<OwnerExpense> OwnerExpenses { get; set; }
     }
 }

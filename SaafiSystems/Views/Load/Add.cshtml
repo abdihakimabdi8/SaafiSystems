@@ -48,6 +48,14 @@
 
                 </td>
                 <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
+                    <div class="form-group">
+                        <label asp-for="Amount"></label>
+                        <input class="form-control" asp-for="Amount" />
+                        <span asp-validation-for="Amount"></span>
+                    </div>
+
+                </td>
+                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
                     <div class="form-group" style="text-align:center">
                         <label asp-for="LoadCategoryID" ></label>
                         <div class="col-md-10">

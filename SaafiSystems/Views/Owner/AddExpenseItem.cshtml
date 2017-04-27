@@ -9,7 +9,7 @@
     </h1>
 </div>
 
-<form asp-controller="Owner" asp-action="AddExpenseItem" method="post">
+@*<form asp-controller="Owner" asp-action="AddExpenseItem" method="post">
     <table class="table table-striped " style="width: 100%; max-width: 100%; margin-bottom: 20px; background-color: transparent; border-spacing: 0; border-collapse: collapse; box-sizing: border-box; display: table;border-collapse: separate; border-spacing: 2px; border-color: grey; font-size: 14px; line-height: 1.42857143;">
 
 
@@ -25,8 +25,8 @@
                         </label>
 
                     </div>
-                    <input type="hidden" name="ExpenseID" value="@Model.Owner.ID" />
-                    <input class="hidden-xs btn btn-success" value=" + Submit Entry" />
+                    <input type="hidden" name="OwnerID" value="@Model.Owner.ID" />
+                    <input type="submit" class="hidden-xs btn btn-success" value=" + Submit Entry" />
                 </td>
 
             </tr>
@@ -35,5 +35,77 @@
 
     </table>
 
+</form>*@
+
+
+
+<form asp-controller="Owner" asp-action="AddExpenseItem" method="post">
+    <table class="table table-striped ">
+        <tr>
+            <th>Date</th>
+            <th>Reference</th>
+            <th>Description</th>
+            <th>Owner</th>
+            <th>Amount</th>
+            <th>Cartegory</th>
+            <th></th>
+            <th>Assign to Owner</th>
+
+        </tr>
+
+        @foreach (var expense in Model.Expenses)
+        {
+
+            <tr>
+                <td> @expense.Date </td>
+                <td> @expense.Reference </td>
+                <td> @expense.Description </td>
+                <td> @expense.Owner </td>
+                <td> @expense.Amount </td>
+                <td> @expense.ExpenseCategory </td>
+
+
+
+
+                <td></td>
+                <td>
+
+
+                    <input type="checkbox" name="ExpenseID" id="@expense.ID" value="@expense.ID">
+                    <input type="hidden" name="OwnerID" value="@Model.Owner.ID" />
+
+
+
+                    <input type="submit" class="hidden-xs btn btn-info btn-xs pull-right" value=" + Assign Item" />
+
+                </td>
+
+            </tr>
+
+        }
+
+    </table>
+
 </form>
 
+
+
+
+
+
+@*@model SaafiSystems.ViewModels.AddOwnerItemViewModel
+
+    @{
+        ViewBag.Titel = "Add Item to Owner" + @Model.Owner.Name;
+    }
+    <form asp-controller="Owner" asp-action="AddItem" method="post">
+        <div class="form-group">
+            <label asp-for="LoadID">
+                <select asp-for="LoadID" asp-items="@Model.Loads"></select>
+                <span asp-validation-for="LoadID"></span>
+            </label>
+
+        </div>
+        <input type="hidden" name="OwnerID" value="@Model.Owner.ID" />
+        <input type="submit" value="Add Item" />
+    </form>*@

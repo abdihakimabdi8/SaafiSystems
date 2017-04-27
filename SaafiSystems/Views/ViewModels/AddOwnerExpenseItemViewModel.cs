@@ -12,7 +12,7 @@ namespace SaafiSystems.ViewModels
 
 
             public Owner Owner { get; set; }
-            public List<SelectListItem> Expenses { get; set; }
+            public List<Expense> Expenses { get; set; }
 
             public int OwnerID { get; set; }
             public int ExpenseID { get; set; }
@@ -22,16 +22,11 @@ namespace SaafiSystems.ViewModels
             public AddOwnerExpenseItemViewModel() { }
             public AddOwnerExpenseItemViewModel(Owner owner, IEnumerable<Expense> expenses)
             {
-                Expenses = new List<SelectListItem>();
+                Expenses = new List<Expense>();
                 {
                     foreach (var expense in expenses)
                     {
-                        Expenses.Add(new SelectListItem
-                        {
-                            Value = expense.ID.ToString(),
-                            Text = expense.Reference,
-
-                        });
+                        Expenses.Add(expense);
                         Owner = owner;
                     }
                 }

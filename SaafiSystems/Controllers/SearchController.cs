@@ -1,61 +1,108 @@
-﻿//using Microsoft.AspNetCore.Mvc;
-//using SaafiSystems.Models;
-//using SaafiSystems.Data;
-//using SaafiSystems.ViewModels;
-//using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SaafiSystems.Models;
+using System.Data;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using SaafiSystems.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using PagedList;
+using PagedList.Core;
+using SaafiSystems.Models.MonthlyRevenueViewModel;
 
-//namespace SaafiSystems.Controllers
-//{
-//    public class SearchController : Controller
-//    {
+// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-//        // Our reference to the data store
-//        private static SaafiDbContext context;
+namespace SaafiSystems.Controllers
+{
+    public class SearchController : Controller
+    {
+        private readonly SaafiDbContext context;
+        public SearchController(SaafiDbContext dbcontext)
+        {
+            context = dbcontext;
+        }
 
-//        public SearchController(SaafiDbContext dbContext)
-//        {
-//          context = dbContext;
-//        }
+        // GET: Reports
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
+        {
 
-//        // Display the search form
-//        public IActionResult Index()
-//        {
-//            SearchLoadsViewModel loadsViewModel = new SearchLoadsViewModel(context.LoadFieldTypes.ToList());
-//            loadsViewModel.Title = "Search";
-//            return View(loadsViewModel);
-//        }
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
 
-//        // Process search submission and display search results
-//        public IActionResult Results(SearchLoadsViewModel loadsViewModel)
-//        {
-//            if (LoadFieldType.Name == "Date")
-//                return View(context.Loads.Where(c => c.Date.ToString() == searchTerm || searchTerm == null).ToList());
-//            if (searchBy == "Reference")
-//                return View(context.Loads.Where(c => c.Reference.ToString() == searchTerm || searchTerm == null).ToList());
 
-//            if (searchBy == "Description")
-//                return View(context.Loads.Where(c => c.Description.ToString() == searchTerm || searchTerm == null).ToList());
 
-//            if (searchBy == "Owner")
-//                return View(context.Loads.Where(c => c.Owner.ToString() == searchTerm || searchTerm == null).ToList());
+            ViewData["OwnerSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Owner_desc" : "";
+            ViewData["categorytortParm"] = String.IsNullOrEmpty(sortOrder) ? "category_desc" : "";
 
-//            if (searchBy == "Amount")
-//                return View(context.Loads.Where(c => c.Amount.ToString() == searchTerm || searchTerm == null).ToList());
-//            else
-//                return View(context.Loads.Where(c => c.LoadCategory.ToString() == searchTerm || searchTerm == null).ToList());
+            ViewData["CurrentFilter"] = searchString;
 
-//            if (loadsViewModel.LoadFieldType.Equals(LoadFieldType.All) || loadsViewModel.Value.Equals(""))
-//            {
-//                loadsViewModel.Loads = loadData.FindByValue(loadsViewModel.Value);
-//            }
-//            else
-//            {
-//                loadsViewModel.Loads = loadData.FindByColumnAndValue(loadsViewModel.Column, loadsViewModel.Value);
-//            }
 
-//            loadsViewModel.Title = "Search";
 
-//            return View("Index", loadsViewModel);
-//        }
-//    }
-//}
+
+
+            ViewBag.CurrentFilter = searchString;
+
+            var loads = from l in context.Loads
+                        select l;
+
+
+            if (searchString != null)
+            {
+
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                loads = loads.Where(l => l.Date.ToString().Contains(searchString) || l.Reference.Contains(searchString) || l.Owner.ToUpper().Contains(searchString.ToUpper()) || l.Description.ToUpper().Contains(searchString.ToUpper()) || l.LoadCategory.ToString().Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "Owner_desc":
+                    loads = loads.OrderByDescending(l => l.Owner);
+                    break;
+                case "Date":
+                    loads = loads.OrderBy(l => l.Date);
+                    break;
+                case "date_desc":
+                    loads = loads.OrderByDescending(l => l.Date);
+                    break;
+                default:
+                    loads = loads.OrderBy(l => l.LoadCategory);
+                    break;
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<Load>.CreateAsync(loads.AsNoTracking(), page ?? 1, pageSize));
+        }
+
+        public IActionResult Search(string searchTerm)
+        {
+            var loads = context.Loads.Where(c => c.Description.Contains(searchTerm)).ToList();
+            return View(loads);
+
+        }
+
+        public async Task<ActionResult> MonthlyRevenue()
+        {
+            IQueryable<MonthlyRevenue> data =
+                from load in context.Loads
+                group load by load.Date into monthlyRevenueGroup
+                select new MonthlyRevenue()
+                {
+                    Date = monthlyRevenueGroup.Key,
+                    RevenueTotal = monthlyRevenueGroup.Count()
+                };
+            return View(await data.AsNoTracking().ToListAsync());
+        }
+
+
+    }
+}
+
+

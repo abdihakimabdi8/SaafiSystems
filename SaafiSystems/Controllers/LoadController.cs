@@ -34,6 +34,7 @@ namespace SaafiSystems.Controllers
 
         public IActionResult Add()
         {
+            //TODO: #6Render Owner/Operator List along Load Categories 
             IList<LoadCategory> loadCategories = context.LoadCategories.ToList();
 
             AddLoadViewModel addLoadViewModel =
@@ -145,6 +146,7 @@ namespace SaafiSystems.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(AddLoadViewModel addLoadViewModel)
         {
+            //TODO: #5 Edit Action Not fulle working
             var load = context.Loads.SingleOrDefault((l) => l.ID == addLoadViewModel.ID);
 
             if (load == null)

@@ -10,34 +10,53 @@
 </div>
 
 <form asp-controller="Owner" asp-action="AddItem" method="post">
-    <table class="table table-striped " style="width: 100%; max-width: 100%; margin-bottom: 20px; background-color: transparent; border-spacing: 0; border-collapse: collapse; box-sizing: border-box; display: table;border-collapse: separate; border-spacing: 2px; border-color: grey; font-size: 14px; line-height: 1.42857143;">
+    <table class="table table-striped ">
+        <tr>
+            <th>Date</th>
+            <th>Reference</th>
+            <th>Description</th>
+            <th>Owner</th>
+            <th>Amount</th>
+            <th>Cartegory</th>
+            <th></th>
+            <th>Assign to Owner</th>
 
+        </tr>
 
-        <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
+        @foreach (var load in Model.Loads)
+        {
 
-            <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+            <tr>
+                <td> @load.Date </td>
+                <td> @load.Reference </td>
+                <td> @load.Description </td>
+                <td> @load.Owner </td>
+                <td> @load.Amount </td>
+                <td> @load.LoadCategory </td>
 
-                <td style="padding: 8px;line-height: 1.42857143;vertical-align: top; border-top: 1px solid #ddd;">
-                    <div class="form-group">
-                        <label asp-for="LoadID">
-                            <select class="form-control" asp-for="LoadID" asp-items="@Model.Loads"></select>
-                            <span asp-validation-for="LoadID"></span>
-                        </label>
-
-                    </div>
-                    <input type="hidden" name="MenuID" value="@Model.Owner.ID" />
-                    <input  class="hidden-xs btn btn-success" value=" + Submit Entry"  />
-                </td>
-              
+                
+                
+                    
+                    <td></td>
+                <td>
+                  
+                    
+                        <input type="checkbox" name="LoadID" id="@load.ID" value="@load.ID">
+                        <input type="hidden" name="OwnerID" value="@Model.Owner.ID" />
+                        
+                    
+                       
+                    <input type="submit" class="hidden-xs btn btn-info btn-xs pull-right" value=" + Assign Load" />
+                   
+</td>
+               
             </tr>
 
-        </tbody>
+        }
 
     </table>
 
 </form>
-
-
 
 
 

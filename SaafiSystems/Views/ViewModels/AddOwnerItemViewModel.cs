@@ -10,26 +10,23 @@ namespace SaafiSystems.ViewModels
     {
 
         public Owner Owner { get; set; }
-        public List<SelectListItem> Loads { get; set; }
+        public List<Load> Loads { get; set; }
 
         public int OwnerID { get; set; }
         public int LoadID { get; set; }
 
+        public Load Load { get; set; }
 
 
         public AddOwnerItemViewModel() { }
         public AddOwnerItemViewModel(Owner owner, IEnumerable<Load> loads)
         {
-            Loads = new List<SelectListItem>();
+           Loads = new List<Load>();
             {
                 foreach (var load in loads)
                 {
-                    Loads.Add(new SelectListItem
-                    {
-                        Value = load.ID.ToString(),
-                        Text = load.Reference,
+                    Loads.Add(load);
 
-                    });
                     Owner = owner;
                 }
             }

@@ -27,25 +27,29 @@
         <tr>
             <th>Reference</th>
             <th>Owner Operator</th>
-            
+
             <th></th>
             <th>Action</th>
             <th></th>
-            <th >Assign to Owner</th>
-       
+            <th>Assign to Owner</th>
+
         </tr>
 
         @foreach (var owner in Model)
         {
 
             <tr>
-                <td><a asp-controller="Menu"
-                   asp-action="ViewOwner"
-                   asp-route-id="@owner.ID">@owner.ID</a></td>
-                       
-                    <td><a asp-controller="Owner"
-                        asp-action="ViewOwner"
-                        asp-route-id="@owner.ID">@owner.Name</a>  </td>
+                <td>
+                    <a asp-controller="Owner"
+                       asp-action="ViewOwnerExpense"
+                       asp-route-id="@owner.ID">@owner.ID</a>
+                </td>
+
+                <td>
+                    <a asp-controller="Owner"
+                       asp-action="ViewOwnerExpense"
+                       asp-route-id="@owner.ID">@owner.Name</a>
+                </td>
                 <td>
 
                     <a href="/owner/edit/@owner.ID" class="btn btn-info btn-xs pull-right">Edit</a>
@@ -57,7 +61,7 @@
                     @*<input type="submit" value="Edit" class="btn btn-info btn-sm" />*@
                 </td>
                 <td></td>
-                <td><a href="/owner/ViewOwner/@owner.ID" class="btn btn-info btn-xs pull-left">Assign Load</a></td>
+                <td><a href="/owner/ViewOwnerExpense/@owner.ID" class="btn btn-info btn-xs pull-left">Assign Expense</a></td>
             </tr>
 
         }
@@ -65,9 +69,9 @@
     </table>
 
 </form>
-<a asp-controller="Owner" asp-action="Add" class="btn btn-success btn-sm" > + Add Owner</a>
+<a asp-controller="Owner" asp-action="Add" class="btn btn-success btn-sm"> + Add Owner</a>
 <a asp-controller="Load" asp-action="Add" class="btn btn-info btn-sm pull-right"> + Add Trip</a>,
-<br/>
+<br />
 <br />
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
